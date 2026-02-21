@@ -1,0 +1,21 @@
+{
+  "name": "Adonai: Sendero Hermético",
+  "short_name": "Adonai",
+  "description": "Aplicación de entrenamiento hermético basada en la obra de Franz Bardon.",
+  "start_url": "/Hemetic-work/",
+  "display": "standalone",
+  "background_color": "#0b1016",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIiB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiI+PHN0eWxlPi5hIHtmaWxsOm5vbmU7c3Ryb2tlOiNkNGFmMzc7c3Ryb2tlLXdpZHRoOjEyO308L3N0eWxlPjxwYXRoIGNsYXNzPSJhIiBkPSJNOTYgMjJ2MTQ4TTIyIDk2aDE0OCIvPjxwYXRoIGNsYXNzPSJhIiBkPSJNNjQgNDJsOCA4IDggOCAzMiAzMiA4IDggOCA4bC04IDgtOCA4LTMxLTMxLTktOC04LTgiLz48cGF0aCBjbGFzcz0iYSIgZD0iTTEyOCA0MmwtOCA4LTggOC0zMiAzMi04IDgtOCA4IDggOCAyIDIgNiA2IDMxLTMxIDktOCA4LTgiLz48Y2lyY2xlIGNsYXNzPSJhIiBjeD0iOTYiIGN5PSI5NiIgcj0iNzQiLz48L3N2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+PHN0eWxlPi5hIHtmaWxsOm5vbmU7c3Ryb2tlOiNkNGFmMzc7c3Ryb2tlLXdpZHRoOjEyO308L3N0eWxlPjxwYXRoIGNsYXNzPSJhIiBkPSJNMjU2IDMwdjQ1M00zMCAyNTZoNDUyIi8+PHBhdGggY2xhc3M9ImEiIGQ9Ik0xNzEgNTVsMjEgMjEgMjEgMjEgODUgODUgMjEgMjEgMjEgMjFsLTIxIDIxLTIxIDIxLTg1LTg1LTIwLTIxLTIxLTIxIi8+PHBhdGggY2xhc3M9ImEiIGQ9Ik0zNDAgNTVsLTIxIDIxLTIxIDIxLTg1IDg1LTIxIDIxLTIxIDIxIDIxIDIxIDUgNSA5IDggODYtODUgMjEtMjEtMjEtMjEiLz48Y2lyY2xlIGNsYXNzPSJhIiBjeD0iMjU2IiBjeT0iMjU2IiByPSIxOTYiLz48L3N2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
