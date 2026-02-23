@@ -115,7 +115,7 @@
         }
 
         .grade-title { font-family: 'Cinzel', serif; font-weight: 700; color: var(--accent-gold-light); font-size: 1.1rem; }
-        .grade-info { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+        .grade-info { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
         /* --- LISTA DE EJERCICIOS --- */
         .exercises-list {
@@ -158,8 +158,9 @@
         .actions { display: flex; gap: 8px; }
         .btn {
             flex: 1; padding: 10px; border: none; border-radius: 4px;
-            font-family: 'Lato', sans-serif; font-weight: bold; font-size: 0.8rem;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
+            font-family: 'Lato', sans-serif; font-weight: bold; font-size: 0.85rem;
+            cursor: pointer; transition: transform 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
         }
         .btn:active { transform: translateY(2px); }
         .btn-train { background: var(--accent-gold); color: #0a0a0a; box-shadow: 0 0 10px rgba(212, 175, 55, 0.15); }
@@ -176,7 +177,7 @@
         .tool-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
         .tool-text { font-size: 0.9rem; color: #ddd; }
 
-        /* --- MENU INFERIOR --- */
+        /* --- NAVEGACION INFERIOR --- */
         .nav-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(8, 11, 16, 0.98); backdrop-filter: blur(15px);
@@ -203,11 +204,11 @@
         .modal-body li { margin-bottom: 8px; }
         .warning-box { background: rgba(198, 40, 40, 0.1); border-left: 3px solid #c62828; padding: 10px; margin: 15px 0; font-size: 0.9rem; color: #ffcdd2; }
 
-        /* TATTWAS CSS */
+        /* Tattwas */
         .tattwa-box { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;}
-        .tattwa-wrapper { text-align: center; }
+        .tattwa-wrapper { text-align: center; display: flex; flex-direction: column; align-items: center; }
         .tattwa-fire { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 50px solid #e53935; margin: 0 auto; filter: drop-shadow(0 0 5px red);}
-        .tattwa-water { width: 50px; height: 25px; background: silver; border-radius: 0 0 50px 50px; margin: 15px auto 0; border: 2px solid #fff; filter: drop-shadow(0 0 5px silver); }
+        .tattwa-water { width: 50px; height: 25px; background: silver; border-radius: 0 0 50px 50px; margin: 15px auto 0; border: 2px solid #eee; filter: drop-shadow(0 0 5px silver); }
         .tattwa-air { width: 50px; height: 50px; background: #2196f3; border-radius: 50%; margin: 0 auto; filter: drop-shadow(0 0 5px blue); }
         .tattwa-earth { width: 50px; height: 50px; background: #fdd835; margin: 0 auto; border: 1px solid #c6a700; filter: drop-shadow(0 0 5px yellow);}
         .tattwa-akasha { width: 40px; height: 55px; background: #000; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; margin: 0 auto; border: 1px solid #444; filter: drop-shadow(0 0 5px white);}
@@ -221,12 +222,11 @@
 
 <header>
     <h1>Adonai</h1>
-    <div class="subtitle">La Senda del Verdadero Adepto</div>
+    <div class="subtitle">Sistema de Iniciación Hermética</div>
 </header>
 
 <div id="main-view" class="container"></div>
 
-<!-- Menú Inferior -->
 <nav class="nav-bar">
     <button class="nav-btn active" onclick="renderView('training')">
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
@@ -256,524 +256,617 @@
 
 <script>
     /* =========================================
-       BASE DE DATOS DE CONTENIDO DETALLADO
+       BASE DE DATOS DE CONTENIDO TEÓRICO DETALLADO PARA LOS 10 GRADOS
        ========================================= */
     const libraryData = {
         // --- GRADO I ---
         'g1_m_obs': `
-            <h3>Control del Pensamiento (Observación)</h3>
-            <p>Este es el primer paso y el más crucial. La mente indisciplinada es el mayor enemigo del mago.</p>
+            <h3>1. Control del Pensamiento (Observación)</h3>
+            <p>Este es el ejercicio fundamental. Debes aprender a ser un espectador de tu propia mente.</p>
             <p><b>Instrucción:</b></p>
             <ol>
                 <li>Siéntese en una posición cómoda (Asana). Relaje todo el cuerpo. Cierre los ojos.</li>
-                <li>Conviértase en un <b>observador silencioso</b> de su propia mente.</li>
-                <li>Observe cómo los pensamientos vienen y van. No los detenga, no los juzgue, no se enoje si son caóticos.</li>
-                <li>No se involucre en la "historia" de ningún pensamiento. Déjelos pasar como vehículos en una carretera.</li>
+                <li>Conviértase en un <strong>observador silencioso</strong> de su propia mente.</li>
+                <li>No intente detener los pensamientos ni forzar nada. No los juzgue, no se enoje si son triviales o "malos".</li>
+                <li>Déjelos pasar como vehículos en una carretera o como nubes en el cielo.</li>
             </ol>
-            <p><b>Meta:</b> Debe lograr esto durante <b>10 minutos</b> completos sin perder la postura de observador y sin ser arrastrado por una cadena de pensamientos.</p>
+            <p><b>Meta:</b> Debe lograr esto durante <strong>10 minutos</strong> completos sin perder la postura de observador y sin ser arrastrado por una cadena de pensamientos.</p>
         `,
         'g1_m_disc': `
-            <h3>Disciplina Mental (Unidireccional)</h3>
+            <h3>2. Disciplina del Pensamiento (Unidireccional)</h3>
             <p>Una vez que puede observar sus pensamientos, debe aprender a sostener uno solo.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Elija un solo pensamiento o imagen simple (ej. una flor, una vela, la palabra "Luz").</li>
-                <li>Mantenga ese pensamiento en el centro de su mente con toda su fuerza.</li>
-                <li>Rechace enérgicamente cualquier otro pensamiento intruso y vuelva inmediatamente a su objeto elegido.</li>
+                <li>Elija un pensamiento simple o imagen (ej. una flor, una vela, la palabra "Luz").</li>
+                <li>Mantenga ese pensamiento en el centro de su mente con toda su fuerza y claridad. Visualícelo y concéntrese solo en él.</li>
+                <li>Si otro pensamiento intruso intenta entrar, rechácelo con firmeza pero sin esfuerzo excesivo, y vuelva inmediatamente a su objeto elegido.</li>
             </ol>
-            <p><b>Meta:</b> Mantener la imagen o idea durante <b>10 minutos</b> sin una sola interrupción.</p>
+            <p><b>Meta:</b> Mantener la imagen o idea durante <strong>10 minutos</strong> sin una sola interrupción. Con la práctica, la imagen se volverá más nítida.</p>
         `,
         'g1_m_vaci': `
-            <h3>Vacío Mental (Silencio)</h3>
-            <p>Este es el fundamento de toda operación mágica futura. Sin vacío, no hay Akasha.</p>
+            <h3>3. Vacío Mental (Silencio)</h3>
+            <p>Este es el fundamento de toda operación mágica futura y la clave para el Akasha.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Cierre los ojos.</li>
-                <li>Rechace enérgicamente cualquier pensamiento que intente aparecer.</li>
-                <li>Cree un estado de vacío absoluto. No debe haber imágenes, ni palabras, ni música interna. Solo silencio.</li>
+                <li>Cierre los ojos. Relaje el cuerpo por completo.</li>
+                <li>Rechace enérgicamente, pero sin lucha, cualquier pensamiento o imagen que intente aparecer.</li>
+                <li>Cree un estado de vacío absoluto en su mente. No debe haber imágenes, ni palabras, ni sonidos internos. Solo el silencio total.</li>
             </ol>
-            <p><b>Meta:</b> Lograr <b>10 minutos</b> de vacío total sin quedarse dormido y sin perder la conciencia.</p>
+            <div class="warning-box"><b>Advertencia:</b> Si se siente cansado o somnoliento, detenga el ejercicio. NUNCA se duerma durante este ejercicio, ya que podría llevar a un desequilibrio.</div>
+            <p><b>Meta:</b> Lograr <strong>10 minutos</strong> de vacío mental perfecto sin quedarse dormido y sin perder la conciencia. Esto requiere mucha práctica y perseverancia.</p>
         `,
         'g1_a_magic': `
-            <h3>El Espejo Mágico del Alma</h3>
-            <p>El equilibrio elemental es la clave del poder. Un mago desequilibrado se destruirá a sí mismo.</p>
-            <p><b>Instrucción (Introspección):</b></p>
+            <h3>El Espejo Mágico del Alma (Introspección)</h3>
+            <p>El equilibrio elemental del alma es la base del carácter y el poder mágico. Un mago desequilibrado se destruirá a sí mismo.</p>
+            <p><b>Instrucción (Introspección Rigurosa):</b></p>
             <ol>
-                <li>Tome un cuaderno privado (Diario Mágico). Nadie más debe verlo.</li>
-                <li><b>Espejo Negro:</b> Haga una lista honesta y despiadada de todos sus defectos, debilidades, vicios y malos hábitos. No esconda nada.</li>
-                <li><b>Espejo Blanco:</b> Haga otra lista con sus virtudes y fortalezas.</li>
-                <li><b>Clasificación Elemental:</b> Asigne cada defecto a un elemento:
+                <li>Tome un cuaderno privado (Diario Mágico). Este será SUYO y NO debe ser visto por nadie.</li>
+                <li>Haga una lista exhaustiva de <strong>todos sus defectos</strong>, debilidades, vicios y malos hábitos. Sea brutalmente honesto. (Este es su "Espejo Negro del Alma").</li>
+                <li>Haga otra lista con <strong>todas sus virtudes</strong> y fortalezas. (Este es su "Espejo Blanco del Alma").</li>
+                <li><b>Clasificación Elemental:</b> Asigne cada defecto y virtud a un elemento predominante. Bardon lo resume así:
                     <ul>
-                        <li>🔥 <b>Fuego:</b> Ira, celos, odio, impulsividad, deseo de destrucción.</li>
-                        <li>💨 <b>Aire:</b> Frivolidad, presunción, chisme, inestabilidad, despilfarro.</li>
-                        <li>💧 <b>Agua:</b> Indiferencia, frialdad, timidez, negligencia, inestabilidad emocional.</li>
-                        <li>🌍 <b>Tierra:</b> Pereza, melancolía, lentitud, pesadez, materialismo.</li>
+                        <li>🔥 <b>Fuego (Voluntad/Pasión):</b> Ira, odio, celos, impulsividad, agresividad, entusiasmo, determinación, audacia.</li>
+                        <li>💨 <b>Aire (Intelecto/Claridad):</b> Frivolidad, presunción, chisme, inestabilidad, curiosidad, optimismo, bondad, alegría.</li>
+                        <li>💧 <b>Agua (Sentimiento/Vida):</b> Indiferencia, frialdad, timidez, negligencia, compasión, serenidad, perdón, ternura.</li>
+                        <li>🌍 <b>Tierra (Conciencia/Prudencia):</b> Pereza, melancolía, lentitud, pesadez, falta de conciencia, atención, perseverancia, sobriedad.</li>
                     </ul>
                 </li>
             </ol>
-            <p><b>Meta:</b> Clasificar al menos 100 defectos antes de pasar al Grado 2.</p>
+            <p><b>Meta:</b> Tener un "Espejo del Alma" lo más completo posible (al menos 100 elementos) con defectos y virtudes clasificados por elementos. Este proceso puede tomar varias semanas.</p>
         `,
         'g1_p_skin': `
             <h3>Higiene Energética Diaria</h3>
-            <p>El cuerpo debe estar preparado para manejar altas corrientes de energía.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li><b>Cepillado:</b> Cada mañana, use un cepillo de cerdas naturales o toalla áspera. Cepille todo el cuerpo en seco hasta que la piel se ponga rosada. Esto abre los poros para la respiración vital.</li>
-                <li><b>Agua Fría:</b> Lávese la parte superior del cuerpo (o dúchese completo) con agua fría. Mientras lo hace, imagine firmemente que el agua elimina no solo el sudor, sino las enfermedades y malas vibraciones de su aura.</li>
-            </ul>
+            <p>El cuerpo debe estar limpio y preparado para manejar altas corrientes de energía. La piel es un "segundo pulmón y riñón".</p>
+            <p><b>Instrucción (Mañana):</b></p>
+            <ol>
+                <li><b>Cepillado en seco:</b> Use un cepillo de cerdas naturales o una toalla áspera. Cepille todo el cuerpo en seco hasta que la piel se ponga rosada. Esto abre los poros.</li>
+                <li><b>Lavado con agua fría:</b> Lávese la parte superior del cuerpo (o dúchese completo) con agua fría.</li>
+                <li><b>Visualización:</b> Mientras se lava, imagine firmemente que el agua no solo limpia el sudor, sino que arrastra y elimina todas las impurezas energéticas, enfermedades, desánimo y cargas negativas de su aura.</li>
+            </ol>
         `,
         'g1_p_breath': `
             <h3>Respiración Consciente de Aire</h3>
-            <p>El aire transporta el principio Akasha y la energía vital.</p>
+            <p>La respiración es el puente entre lo material y lo Akáshico. El aire transporta el principio Akasha y la energía vital.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Siéntese cómodamente. Respire por la nariz lenta y uniformemente.</li>
-                <li><b>Imaginación:</b> Al inhalar, imagine que el aire está cargado de un deseo específico (ej. "Salud perfecta", "Paz", "Éxito").</li>
-                <li>Sienta que esa idea entra en su sangre a través de los pulmones y se distribuye por todo el cuerpo.</li>
-                <li>Al exhalar, expulse el aire "vacío", pero retenga la idea/energía dentro de usted.</li>
+                <li>Siéntese en Asana. Respire por la nariz lenta y uniformemente.</li>
+                <li><b>Imaginación:</b> Al inhalar, imagine que el aire está cargado de un deseo específico o cualidad (ej. "Salud perfecta", "Paz interior", "Éxito en mi misión").</li>
+                <li>Sienta que esa idea, coloreada por el elemento aire (azul), entra en su sangre a través de los pulmones y se distribuye por todo el cuerpo, impregnando cada célula.</li>
+                <li>Al exhalar, expulse solo el aire "vacío", pero <strong>retenga y fije firmemente la idea/energía</strong> dentro de usted.</li>
             </ol>
-            <p><b>Meta:</b> Iniciar con 7 respiraciones mañana y noche. Aumentar 1 por día hasta llegar a 40.</p>
+            <p><b>Progresión:</b> Comience con <strong>7 respiraciones</strong> por la mañana y 7 por la noche. Aumente 1 respiración por día. La meta es alcanzar un mínimo de <strong>20-30 respiraciones</strong> sin cansar los pulmones. No exceda 10-15 minutos por sesión.</p>
+            <div class="warning-box"><b>Advertencia:</b> NUNCA respire conscientemente sin una idea o cualidad clara en mente. Siempre debe ser un propósito específico.</div>
         `,
         'g1_p_euc': `
-            <h3>Magia del Agua y Comida (Eucaristía)</h3>
-            <p>Todo lo que entra en el cuerpo puede ser una herramienta mágica.</p>
-            <p><b>Comida:</b></p>
-            <ul>
-                <li>Siéntese ante su comida. Concéntrese intensamente en que la comida contiene un deseo (ej. "Poder", "Salud").</li>
-                <li>Imagine la comida irradiando esa cualidad. Coma lentamente, asimilando esa energía. No hable ni lea.</li>
-            </ul>
-            <p><b>Agua Mágica:</b></p>
-            <ul>
-                <li>Tome un vaso de agua con la mano izquierda.</li>
-                <li>Proyecte su deseo en el agua hasta que sienta que el agua "es" el deseo (ej. "Medicina universal"). Bébela a sorbos pequeños.</li>
-            </ul>
+            <h3>Magia del Agua y la Comida (Eucaristía)</h3>
+            <p>Todo lo que entra en el cuerpo puede ser un vehículo mágico para sus deseos. Es una forma de "comunión sagrada".</p>
+            <p><b>Instrucción (Comida):</b></p>
+            <ol>
+                <li>Siéntese ante su comida. Concéntrese intensamente en que la comida contiene un deseo específico (ej. "Poder", "Salud", "Vitalidad").</li>
+                <li>Imagine la comida irradiando esa cualidad. Bardon la compara con la Eucaristía, es un acto sagrado.</li>
+                <li>Coma lentamente, mastique completamente, asimilando esa energía con cada bocado.</li>
+                <li>NO hable ni lea mientras come; su mente debe estar fija en su deseo.</li>
+            </ol>
+            <p><b>Instrucción (Agua Mágica):</b></p>
+            <ol>
+                <li>Tome un vaso de agua pura con la mano izquierda.</li>
+                <li>Concéntrese en el agua, proyectando su deseo en ella hasta que sienta que el agua "es" el deseo (ej. "Curación universal", "Claridad mental").</li>
+                <li>Beba el agua a sorbos pequeños, asimilando la energía impregnada.</li>
+                <li>También puede usar esta técnica con agua para lavarse, imaginando la limpieza de su aura.</li>
+            </ol>
         `,
 
         // --- GRADO II ---
         'g2_mental': `
             <h3>Autosugestión</h3>
-            <p>El subconsciente es más receptivo en los momentos de transición entre vigilia y sueño.</p>
+            <p>El subconsciente es más receptivo en los momentos de transición entre vigilia y sueño. Esta es la base de la programación mental.</p>
             <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Prepare una frase corta y positiva en tiempo presente (ej. "Yo estoy sano", "Mi memoria es perfecta").</li>
-                <li>Justo antes de dormir y inmediatamente al despertar, repita esta frase mentalmente.</li>
-                <li><b>El Collar:</b> Use un collar de cuentas o cuerda con nudos para contar 40 repeticiones. Esto evita que su mente consciente se distraiga contando números.</li>
-            </ul>
+            <ol>
+                <li>Prepare una frase corta, clara y positiva en tiempo presente (ej. "Yo estoy sano", "Mi memoria es perfecta", "Mi voluntad es inquebrantable").</li>
+                <li>Justo antes de dormir (cuando la somnolencia es máxima) y nuevamente inmediatamente al despertar (antes de que la mente consciente tome el control), repita esta frase mentalmente.</li>
+                <li><b>El Collar de Cuentas:</b> Use un collar de cuentas (30-40 cuentas) o una cuerda con nudos para contar 40 repeticiones. Esto evita que su mente consciente se distraiga contando números.</li>
+            </ol>
+            <p><b>Meta:</b> Realizar 40 repeticiones de la autosugestión dos veces al día hasta que el deseo se manifieste, o hasta que esté satisfecho con el resultado. NO pase a otra autosugestión hasta completar la anterior.</p>
         `,
         'g2_sensory': `
-            <h3>Concentración Sensorial</h3>
-            <p>El mago debe aprender a usar sus sentidos mentales con la misma claridad que los físicos.</p>
-            <p><b>Práctica:</b> Dedique 5 minutos a cada sentido:</p>
+            <h3>Concentración Sensorial (Los 5 Sentidos)</h3>
+            <p>El mago debe aprender a usar sus sentidos mentales con la misma claridad e intensidad que los físicos.</p>
+            <p><b>Instrucción:</b></p>
+            <p>Dedique tiempo a cada sentido, comenzando con 5 minutos y aumentando gradualmente:</p>
             <ol>
-                <li><b>Visual:</b> Visualice un objeto (ej. un lápiz) con los ojos cerrados. Mantenga la imagen fija.</li>
-                <li><b>Auditiva:</b> Escuche mentalmente el tic-tac de un reloj.</li>
-                <li><b>Sensorial:</b> Sienta frío, calor o peso sin causa física.</li>
-                <li><b>Olfativa:</b> Huela el aroma de una rosa imaginaria.</li>
-                <li><b>Gustativa:</b> Saboree azúcar o limón imaginario.</li>
+                <li><b>Visual:</b> Cierre los ojos. Visualice un objeto simple (ej. un tenedor) con todos sus detalles, colores y forma. Mantenga la imagen fija y nítida. Luego intente hacerlo con los ojos abiertos, proyectando la imagen en el aire.</li>
+                <li><b>Auditiva:</b> Cierre los ojos. Escuche mentalmente un sonido específico (ej. el tic-tac de un reloj). Concéntrese solo en el sonido, sin imágenes. Progrese a sonidos más complejos (música).</li>
+                <li><b>Táctil:</b> Cierre los ojos. Sienta una sensación física (ej. frío intenso, calor, peso, ligereza) sin causa externa. Mantenga la sensación firme.</li>
+                <li><b>Olfativa:</b> Cierre los ojos. Huela mentalmente un aroma (ej. una rosa, café) sin la sustancia física.</li>
+                <li><b>Gustativa:</b> Cierre los ojos. Saboree mentalmente un gusto (ej. azúcar, limón) sin comer nada.</li>
             </ol>
+            <p><b>Meta:</b> Lograr 5 minutos de concentración perfecta en cada sentido. Luego intente combinar 2 o 3 sentidos simultáneamente (ej. ver y oír la campana).</p>
         `,
         'g2_astral': `
-            <h3>Transmutación del Carácter</h3>
-            <p>Este es el trabajo de la "Piedra Filosofal" en el alma.</p>
+            <h3>Equilibrio Mágico (Transmutación del Carácter)</h3>
+            <p>Este es el trabajo de la "Piedra Filosofal" en el alma, crucial para la evolución mágica. Sin equilibrio, el mago se destruye a sí mismo.</p>
             <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Tome la lista de defectos del Grado 1 (Espejo Negro).</li>
-                <li>Seleccione los defectos más graves.</li>
-                <li><b>Método 1 (Voluntad):</b> Cada vez que surja el defecto, contrarréstrelo conscientemente con la virtud opuesta.</li>
-                <li><b>Método 2 (Autosugestión):</b> Use el ejercicio mental de autosugestión para eliminar el defecto.</li>
-            </ul>
-            <p><b>Advertencia:</b> No intente avanzar a la magia de elementos si su carácter está desequilibrado. El elemento dominante lo destruirá.</p>
+            <ol>
+                <li>Tome su lista de defectos del Grado 1 (Espejo Negro).</li>
+                <li>Seleccione los defectos más graves y luego los medianos y pequeños.</li>
+                <li><b>Método 1 (Combate):</b> Cada vez que surja el defecto, contrarréstrelo conscientemente con la virtud opuesta (ej. si siente ira, evoque amor).</li>
+                <li><b>Método 2 (Autosugestión):</b> Use el ejercicio de autosugestión para eliminar un defecto o fomentar una virtud.</li>
+                <li><b>Método 3 (Observación):</b> Observe el origen del impulso de la pasión y córtelo de raíz con la voluntad.</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> NUNCA intente dominar los elementos sin antes haber logrado un equilibrio considerable de su carácter. El elemento dominante lo destruirá.</div>
+            <p><b>Meta:</b> Lograr un equilibrio notable en su temperamento y eliminar los defectos más evidentes.</p>
         `,
         'g2_physical': `
             <h3>Respiración por los Poros</h3>
-            <p>El cuerpo puede respirar energía vital por cada célula, no solo los pulmones.</p>
+            <p>El cuerpo puede respirar energía vital por cada célula, no solo los pulmones. La piel es un "segundo pulmón y riñón" para el Akasha.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Siéntese en Asana. Relájese.</li>
+                <li>Siéntese en Asana. Relaje toda la musculatura del cuerpo.</li>
                 <li>Imagine que su piel tiene millones de pequeños pulmones.</li>
-                <li>Al inhalar, sienta que el aire vital (cargado de luz o salud) entra por cada poro de su cuerpo hasta llegar a los huesos.</li>
-                <li>Sienta la presión de la energía vital dentro de usted.</li>
-                <li>Al exhalar, imagine que expulsa impurezas y aire viciado por cada poro hacia afuera.</li>
+                <li>Al inhalar, sienta que el aire vital (cargado de luz o una cualidad específica) entra por cada poro de su cuerpo, llenándolo hasta los huesos.</li>
+                <li>Sienta la presión de la energía vital dentro de usted, como una esponja que absorbe agua.</li>
+                <li>Al exhalar, imagine que expulsa impurezas, aire viciado y cualquier sensación negativa por cada poro hacia afuera.</li>
             </ol>
+            <p><b>Meta:</b> Lograr una respiración consciente completa por los poros de todo el cuerpo.</p>
         `,
         'g2_body': `
-            <h3>Dominio del Cuerpo</h3>
-            <p>Para controlar fuerzas externas, primero debe controlar su propio vehículo.</p>
+            <h3>Dominio del Cuerpo (Inmovilidad)</h3>
+            <p>Para controlar fuerzas externas, primero debe controlar su propio vehículo físico.</p>
             <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Siéntese en una posición cómoda pero firme.</li>
-                <li>Permanezca absolutamente inmóvil. No mueva ni un dedo, no parpadee excesivamente, no se rasque.</li>
-                <li>Ignore cualquier picazón.</li>
-                <li>Comience con 5 minutos y aumente gradualmente hasta lograr <b>30 minutos</b> de inmovilidad perfecta sin tensión.</li>
-            </ul>
+            <ol>
+                <li>Siéntese en una posición cómoda (Asana), con la columna recta, pies juntos y manos sobre los muslos.</li>
+                <li>Permanezca absolutamente inmóvil. No mueva ni un dedo, no parpadee excesivamente, no se rasque. Ignore cualquier picazón, hormigueo o impulso.</li>
+                <li>Si sus rodillas se separan, puede atarlas con un pañuelo.</li>
+            </ol>
+            <p><b>Meta:</b> Lograr <strong>30 minutos</strong> de inmovilidad perfecta sin tensión ni perturbaciones nerviosas. Esto fortalecerá enormemente su fuerza de voluntad.</p>
         `,
 
         // --- GRADO III ---
         'g3_mental': `
-            <h3>Concentración Multisensorial y Proyección</h3>
-            <p><b>Multisensorial:</b> Combine dos o más sentidos en la imaginación. Vea un reloj, escuche su tic-tac y sienta su forma fría y metálica simultáneamente.</p>
+            <h3>Concentración Multisensorial y Proyección Externa de Imágenes</h3>
+            <p><b>Visualización Multisensorial:</b> Imagine un objeto. Mírelo (visión), escuche su sonido (audición) y sienta su tacto (sensación) simultáneamente. Progrese combinando los 5 sentidos.</p>
             <p><b>Proyección Externa:</b></p>
             <ol>
-                <li>Visualice un objeto con los ojos cerrados.</li>
+                <li>Visualice un objeto con los ojos cerrados, tan nítido como real.</li>
                 <li>Luego, abra los ojos y proyecte esa imagen fuera de su cabeza, haciéndola flotar en el aire ante usted.</li>
                 <li>La imagen debe parecer tan real y tangible como un objeto físico.</li>
-                <li>Desvanezca la imagen a voluntad.</li>
+                <li>Aprenda a desvanecer la imagen a voluntad.</li>
             </ol>
+            <p><b>Meta:</b> Mantener la imagen externa nítida y tangible por 5 minutos. Esta es la base de la materialización.</p>
         `,
         'g3_astral': `
-            <h3>Inhalación de los Elementos</h3>
-            <p>Aprender a cargar el cuerpo astral con los elementos universales. Use la respiración por los poros.</p>
+            <h3>Respiración de los Elementos</h3>
+            <p>Aprender a cargar el cuerpo astral con los elementos universales. Use la respiración por los poros como en el Grado II.</p>
+            <p><b>Instrucción:</b></p>
             <ul>
-                <li>🔥 <b>Fuego:</b> Inhale calor y expansión (seco). Sienta el calor físico.</li>
-                <li>💨 <b>Aire:</b> Inhale ligereza y flotabilidad. Sienta que pierde peso.</li>
-                <li>💧 <b>Agua:</b> Inhale frío y contracción (magnético). Sienta frío glacial.</li>
-                <li>🌍 <b>Tierra:</b> Inhale peso y gravedad. Sienta pesadez de plomo.</li>
+                <li>🔥 <b>Fuego (Rojo):</b> Inhale el elemento Fuego (calor y expansión) en todo su cuerpo. Sienta el calor físico y la presión ígnea.</li>
+                <li>💨 <b>Aire (Azul):</b> Inhale el elemento Aire (ligereza y flotabilidad). Sienta que pierde peso y se vuelve como un globo.</li>
+                <li>💧 <b>Agua (Plata):</b> Inhale el elemento Agua (frío y contracción, magnético). Sienta frío glacial.</li>
+                <li>🌍 <b>Tierra (Amarillo):</b> Inhale el elemento Tierra (peso y gravedad). Sienta pesadez de plomo y solidez.</li>
             </ul>
-            <div class="warning-box"><b>¡ADVERTENCIA!</b> Al terminar el ejercicio, siempre debe EXHALAR el elemento completamente hasta volver a la normalidad. No se quede cargado con un elemento o dañará su salud.</div>
+            <div class="warning-box"><b>¡ADVERTENCIA CRÍTICA!</b> Al terminar CADA ejercicio elemental, siempre debe EXHALAR el elemento completamente, imaginando que regresa al universo. No retenga un elemento, ya que causará desequilibrios, enfermedades y obsesiones.</div>
+            <p><b>Meta:</b> Realizar 7 inhalaciones y exhalaciones por elemento. Repetir diariamente hasta sentir el elemento físicamente.</p>
         `,
         'g3_physical': `
-            <h3>Acumulación de Energía Vital</h3>
+            <h3>Acumulación de Energía Vital (Biomagnetismo)</h3>
+            <p>Aprender a acumular y proyectar la energía vital para curar o influenciar.</p>
             <p><b>Instrucción:</b></p>
             <ol>
                 <li>Respire por los poros inhalando energía vital del universo.</li>
-                <li>No exhale la energía. Reténgala en el cuerpo. Exhale solo el aire vacío.</li>
-                <li>Con cada respiración, la energía se condensa más. Sienta la presión, como vapor en una caldera.</li>
-                <li>Cuando esté lleno a reventar, proyecte esa energía a través de sus manos para curar, o devuélvala al universo explosivamente.</li>
+                <li>NO exhale la energía. Reténgala en el cuerpo. Exhale solo el aire viciado.</li>
+                <li>Con cada respiración, la energía se condensa más, como un vapor comprimido. Sienta la presión y el calor dentro de usted.</li>
+                <li>Cuando esté lleno a reventar (sentirá irradiación a 1 metro), proyecte esa energía a través de sus manos para curar a otros, o devuélvala al universo explosivamente para disolver la tensión.</li>
             </ol>
         `,
 
         // --- GRADO IV ---
         'g4_mental': `
-            <h3>Transferencia de Conciencia</h3>
-            <p>Romper la barrera del "Yo".</p>
+            <h3>Transposición de la Conciencia (Mental)</h3>
+            <p>El objetivo es romper la barrera del "Yo" y expandir la conciencia más allá del cuerpo.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Siéntese frente a un objeto (ej. una piedra).</li>
-                <li>Transfiera su conciencia al centro del objeto. Olvide su cuerpo.</li>
-                <li>Sienta cómo es "ser" la piedra (fría, dura, inmóvil).</li>
-                <li>Progrese hacia plantas (sienta el crecimiento), luego animales (sienta el instinto) y finalmente seres humanos.</li>
+                <li>Elija un objeto (ej. una piedra, un lápiz). Siéntese frente a él.</li>
+                <li>Transfiera su conciencia al centro del objeto. Olvide su propio cuerpo y siéntase como el objeto (su forma, peso, textura).</li>
+                <li>Progrese con plantas (sienta el crecimiento), luego animales (sienta sus instintos) y finalmente, con mucha cautela, con seres humanos (sienta sus pensamientos y emociones).</li>
             </ol>
+            <p><b>Meta:</b> Lograr 5 minutos de transposición perfecta a cada tipo de objeto/ser. Luego intente hacerlo con los ojos abiertos.</p>
         `,
         'g4_astral': `
-            <h3>Acumulación Elemental (Cuerpo)</h3>
-            <p>Cargar regiones específicas del cuerpo con elementos (Anatomía Oculta). Esto equilibra el cuerpo astral.</p>
+            <h3>Represamiento de los Elementos en Partes del Cuerpo (Anatomía Oculta)</h3>
+            <p>Cargar regiones específicas del cuerpo con los elementos para fortalecer el cuerpo astral y equilibrar las funciones. Esto se basa en la anatomía oculta de Bardon.</p>
+            <p><b>Instrucción:</b></p>
             <ul>
-                <li><b>Fuego:</b> Cabeza (Voluntad).</li>
-                <li><b>Aire:</b> Pecho (Sentimiento/Vida).</li>
-                <li><b>Agua:</b> Abdomen (Emoción/Magnetismo).</li>
-                <li><b>Tierra:</b> Piernas y Huesos (Conciencia física).</li>
+                <li>🔥 <b>Fuego (Cabeza):</b> Respire Fuego en su cabeza para fortalecer la voluntad e intelecto.</li>
+                <li>💨 <b>Aire (Pecho):</b> Respire Aire en su pecho para equilibrar los sentimientos y la vida.</li>
+                <li>💧 <b>Agua (Abdomen):</b> Respire Agua en su abdomen para dominar las pasiones y el magnetismo.</li>
+                <li>🌍 <b>Tierra (Piernas/Pies):</b> Respire Tierra en sus piernas y pies para fortalecer la conciencia física y el enraizamiento.</li>
             </ul>
         `,
         'g4_physical': `
-            <h3>Creación de Rituales</h3>
-            <p>El mago no depende de rituales ajenos, crea los suyos.</p>
+            <h3>Creación de Rituales (Gesticulación)</h3>
+            <p>El mago no depende de rituales ajenos; crea los suyos propios. Los gestos son anclas poderosas para la voluntad.</p>
             <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Elija una intención (ej. entrar en trance, protección).</li>
-                <li>Invente un gesto (mudra) con las manos o dedos que represente esa intención.</li>
-                <li>Cargue ese gesto con la voluntad repetidamente.</li>
-                <li>Con el tiempo, solo hacer el gesto liberará la energía automáticamente (como un gatillo).</li>
-            </ul>
+            <ol>
+                <li>Elija una intención específica (ej. protección, evocar simpatía, calmar la mente).</li>
+                <li>Invente un gesto simple con las manos o dedos (ej. un mudra) que simbolice esa intención.</li>
+                <li>Cargue ese gesto con su voluntad y el poder de su imaginación repetidamente.</li>
+                <li>Con el tiempo, solo hacer el gesto liberará la energía o el efecto deseado automáticamente (como un "gatillo" mágico).</li>
+            </ol>
+            <p><b>Meta:</b> Desarrollar al menos 3-5 rituales personales efectivos.</p>
         `,
 
         // --- GRADO V ---
-        'g5_mental': `
+        'g5_m_space': `
             <h3>Magia del Espacio (Profundidad del Punto)</h3>
+            <p>Este es el secreto de la cuarta dimensión y el principio del Akasha.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Cierre los ojos. Imagínese en el centro del universo infinito.</li>
-                <li>Usted es solo un punto de conciencia. No tiene cuerpo.</li>
-                <li>No hay arriba, abajo, ni lados. Solo profundidad infinita.</li>
-                <li>Este es el contacto con el principio Akasha (la quintaesencia).</li>
+                <li>Siéntese en Asana. Cierre los ojos.</li>
+                <li>Imagine el universo entero como un espacio infinito sin límites.</li>
+                <li>Usted no tiene cuerpo; es solo un punto de conciencia en el centro de ese espacio.</li>
+                <li>No hay arriba, abajo, ni lados. Solo profundidad infinita. Esta es la experiencia del Akasha.</li>
             </ol>
+            <p><b>Meta:</b> Mantener esta conciencia del "punto de profundidad" por 10 minutos. Es la base para el viaje mental.</p>
         `,
-        'g5_astral': `
-            <h3>Proyección Exterior de Elementos</h3>
-            <p>Aprender a condensar elementos fuera del cuerpo.</p>
+        'g5_a_proj': `
+            <h3>Proyección Exterior de Elementos (Condensación Directa)</h3>
+            <p>Aprender a condensar elementos directamente del universo sin que pasen por el cuerpo.</p>
             <p><b>Instrucción:</b></p>
-            <ul>
-                <li>En lugar de inhalar el elemento hacia adentro, imagínese que extrae el elemento del universo y llena la habitación con él.</li>
-                <li>Haga que la habitación se sienta físicamente caliente (Fuego) o fría (Agua).</li>
-                <li>Sienta que nada en el océano de ese elemento.</li>
-                <li>Al final, disuelva el elemento de nuevo en el universo.</li>
-            </ul>
+            <ol>
+                <li>Elija un elemento (Fuego, Aire, Agua, Tierra) y un espacio (su habitación).</li>
+                <li>Imagine que extrae el elemento directamente del universo y llena la habitación con él.</li>
+                <li>Haga que la habitación se sienta físicamente con la cualidad del elemento (ej. caliente para Fuego, pesada para Tierra).</li>
+                <li>No se canse. Al final, disuelva el elemento de nuevo en el universo.</li>
+            </ol>
+            <p><b>Meta:</b> Crear una atmósfera elemental perceptible físicamente en una habitación.</p>
         `,
-        'g5_physical': `
-            <h3>Comunicación Pasiva</h3>
-            <p>Preparación para contactar con su Ángel Guardián o inteligencia superior.</p>
+        'g5_p_comm': `
+            <h3>Comunicación Pasiva (Péndulo y Mano)</h3>
+            <p>Preparación para contactar con su Ángel Guardián o inteligencias superiores.</p>
             <p><b>Práctica:</b></p>
-            <ul>
-                <li><b>Levitación de la Mano:</b> Siéntese y ponga la mano en la mesa. Desée que su mano se mueva automáticamente por la fuerza de su espíritu. No use músculos.</li>
-                <li><b>Péndulo:</b> Use un péndulo para obtener respuestas Sí/No de su subconsciente.</li>
-            </ul>
+            <ol>
+                <li><b>Levitación de la Mano:</b> Siéntese, ponga su mano en la mesa. Desée que su mano se levante por sí sola, por la fuerza de su espíritu, sin usar músculos.</li>
+                <li><b>Péndulo Sidérico:</b> Use un péndulo (anillo en un hilo) sobre un alfabeto dibujado. Pida a su Guía Espiritual que mueva el péndulo para respuestas. Primero, pregunte "Sí" (3 toques), "No" (2 toques).</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> No use esto por simple curiosidad, solo por motivos nobles. No crea todo lo que se le dice sin verificación.</div>
         `,
 
         // --- GRADO VI ---
-        'g6_mental': `
-            <h3>Meditación en el Espíritu</h3>
-            <p>Tome conciencia de su propio espíritu mental dentro del cuerpo. Diferencie claramente entre:</p>
-            <ul>
-                <li><b>Cuerpo Físico:</b> El vehículo.</li>
-                <li><b>Cuerpo Astral (Alma):</b> El asiento de las emociones y carácter.</li>
-                <li><b>Espíritu (Mental):</b> El "Yo" inmortal, la chispa divina.</li>
-            </ul>
-            <p>Aprenda a actuar plenamente como Espíritu.</p>
-        `,
-        'g6_astral': `
-            <h3>Trance de Akasha</h3>
+        'g6_m_spirit': `
+            <h3>Meditación en el Propio Espíritu</h3>
+            <p>Desarrollar la conciencia del espíritu como una entidad inmortal e independiente.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Entre en el estado de profundidad del punto (Grado 5).</li>
-                <li>Medite en el Akasha: el mundo de las causas, sin tiempo ni espacio. El color es violeta oscuro o negro brillante.</li>
-                <li>Absorba el Akasha en su conciencia.</li>
-                <li>En este estado, usted está por encima de los elementos y del destino.</li>
+                <li>Medite profundamente en su "Yo" espiritual. Diferencie claramente entre:
+                    <ul>
+                        <li><b>Cuerpo Físico:</b> El vehículo.</li>
+                        <li><b>Cuerpo Astral (Alma):</b> El asiento de emociones.</li>
+                        <li><b>Espíritu (Mental/Yo):</b> La chispa divina, su verdadera esencia inmortal.</li>
+                    </ul>
+                </li>
+                <li>Sienta que su espíritu impregna y mueve tanto su cuerpo astral como el físico.</li>
+                <li>Aprenda a actuar y sentir plenamente como Espíritu.</li>
             </ol>
         `,
-        'g6_physical': `
-            <h3>Creación de Elementales</h3>
-            <p>El acto de creación mágica. Formar un servidor de energía.</p>
+        'g6_a_akasha': `
+            <h3>Inducción Consciente del Estado de Trance Akáshico</h3>
+            <p>Contacto directo con el Akasha, la fuente original de toda existencia.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Siéntese en Asana. Cierre los ojos.</li>
+                <li>Inspire un flujo de Akasha (sustancia etérica violeta oscuro/negra brillante) por los pulmones y poros, llenando todo su cuerpo.</li>
+                <li>Sienta el poder y el dominio sobre los cuatro elementos que el Akasha le confiere.</li>
+                <li>Al exhalar, <strong>mantenga el Akasha dentro de usted</strong>. A diferencia de los elementos, el Akasha NO se exhala.</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> Este es un paso muy poderoso. Asegúrese de un carácter noble antes de iniciar esta práctica.</div>
+        `,
+        'g6_p_elem': `
+            <h3>Generación o Cría de Elementales</h3>
+            <p>Creación de servidores de energía con una forma, nombre, tarea y tiempo de vida específicos.</p>
             <p><b>Pasos:</b></p>
             <ol>
-                <li><b>Forma:</b> Imagine la forma del ser (ej. una bola de luz).</li>
-                <li><b>Nombre:</b> Dele un nombre único.</li>
-                <li><b>Tarea:</b> Ordene una tarea específica y ética.</li>
-                <li><b>Tiempo:</b> Fije su duración de vida.</li>
-                <li><b>Proyección:</b> Separe una parte de su propia energía vital o elemental y llene la forma.</li>
-                <li><b>Reabsorción:</b> Al terminar la tarea o el tiempo, reabsorba la energía y disuelva la forma.</li>
+                <li><b>Forma:</b> Visualice la forma deseada (ej. bola de luz, figura humana, animal).</li>
+                <li><b>Nombre:</b> Dele un nombre único y secreto (ej. "Lucis").</li>
+                <li><b>Tarea:</b> Asigne una tarea específica y ética (ej. proteger su casa, fortalecer su memoria).</li>
+                <li><b>Tiempo de Vida:</b> Determine su duración (ej. "hasta que la tarea se cumpla", "1 año").</li>
+                <li><b>Carga:</b> Proyecte parte de su propia energía vital o elemental en la forma.</li>
+                <li><b>Envío:</b> Rompa el "cordón" mental que lo une a él. Envíelo a su misión.</li>
+                <li><b>Reabsorción/Disolución:</b> Al terminar la tarea o el tiempo, reabsorba la energía y disuelva la forma. NUNCA lo deje vagar sin propósito.</li>
             </ol>
         `,
 
         // --- GRADO VII ---
-        'g7_mental': `
-            <h3>Análisis del Espíritu</h3>
-            <p>Similar al Espejo del Alma del Grado 1, pero enfocado en las capacidades mentales: Voluntad, Intelecto y Sentimiento. Asegúrese de que estén equilibradas. Un mago inteligente pero sin voluntad es débil; uno con voluntad pero tonto es peligroso.</p>
+        'g7_m_spirit': `
+            <h3>Análisis del Espíritu (II)</h3>
+            <p>Continúe el auto-análisis del Grado I, pero ahora en relación con las facultades intelectuales de su espíritu: Voluntad (Fuego), Intelecto (Aire), Sentimiento (Agua), Conciencia (Tierra). Determine cuál predomina y cuál necesita fortalecimiento.</p>
         `,
-        'g7_astral': `
-            <h3>Desarrollo de los Sentidos Astrales</h3>
-            <p><b>Clarividencia (Ojo Mágico):</b> Crear un "Ojo" de luz condensada y proyectarlo para ver a distancia o ver auras.</p>
-            <p><b>Clariaudiencia:</b> Escuchar voces espirituales. Se practica concentrándose en la región del oído con el elemento Aire.</p>
-            <p><b>Clarinsentencia:</b> Sentir vibraciones a través del plexo solar (Elemento Agua/Tierra).</p>
+        'g7_a_clariv': `
+            <h3>Desarrollo de la Clarividencia Mágica</h3>
+            <p>Desarrollo del "Ojo Mágico" para ver en el plano astral y más allá.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Represe luz universal en sus ojos (como en Grado 3).</li>
+                <li>Cargue un <strong>espejo mágico</strong> (ver Herramientas) con Akasha o luz.</li>
+                <li>Mire el espejo (no su reflejo). Proyecte su deseo de ver algo (ej. el aura de una persona).</li>
+                <li>Con práctica, verá imágenes, auras o seres.</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> No fuerce la clarividencia con drogas. Esto es peligroso y lleva a la locura.</div>
         `,
-        'g7_physical': `
-            <h3>Creación de Elementarios</h3>
-            <p>Diferencia con Elementales: Los elementales se forman con la energía del mago. Los <b>Elementarios</b> se forman tomando energía prestada de la naturaleza o del universo, haciéndolos más independientes y poderosos.</p>
-            <div class="warning-box">Solo para iniciados con ética impecable. El abuso crea karma negativo severo.</div>
+        'g7_a_clariau': `
+            <h3>Desarrollo de la Clariaudiencia Mágica</h3>
+            <p>Desarrollo del "Oído Mágico" para escuchar en el plano astral.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Cargue su cuerpo con el elemento Aire (azul) como en Grado 3.</li>
+                <li>Ponga 2 bolitas de algodón impregnadas con condensador fluídico (ver Herramientas) en sus oídos.</li>
+                <li>Concéntrese en la región del oído y desee escuchar voces astrales.</li>
+                <li>Al principio, serán pensamientos, luego voces internas, luego voces externas.</li>
+            </ol>
+        `,
+        'g7_a_sensit': `
+            <h3>Desarrollo de la Clarinsentencia Mágica</h3>
+            <p>Desarrollo del "Tacto Mágico" para sentir en el plano astral.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Cargue su cuerpo con el elemento Agua (plateado) como en Grado 3.</li>
+                <li>Ponga un pedazo de franela con condensador fluídico en el plexo solar (estómago).</li>
+                <li>Concéntrese en esa región y desee sentir vibraciones, emociones o la presencia de seres.</li>
+            </ol>
+        `,
+        'g7_p_elem': `
+            <h3>Generación de Elementarios</h3>
+            <p>Creación de entidades semindependientes usando energías de la naturaleza.</p>
+            <p><b>Instrucción:</b> Use los mismos 4 métodos de creación que para los Elementales (Grado 6), pero ahora extraiga la energía no solo de su propio cuerpo, sino directamente del universo o de una fuente natural específica (ej. un árbol, un río).</p>
+            <div class="warning-box"><b>Advertencia:</b> Los Elementarios son más poderosos que los Elementales. Requieren mayor maestría y ética, ya que tienen más autonomía.</div>
         `,
 
         // --- GRADO VIII ---
-        'g8_mental': `
-            <h3>Viaje Mental (Wandering)</h3>
-            <p>La técnica de salir del cuerpo físico NO con el cuerpo astral, sino con el <b>Cuerpo Mental</b> (Espíritu).</p>
+        'g8_m_travel': `
+            <h3>Viaje Mental (Proyección del Espíritu)</h3>
+            <p>El "viaje fuera del cuerpo" del espíritu (cuerpo mental). Más seguro que el viaje astral.</p>
             <p><b>Instrucción:</b></p>
             <ol>
-                <li>Transfiera su conciencia fuera del cuerpo (como en Grado 4).</li>
-                <li>Visualícese de pie junto a su cuerpo físico.</li>
-                <li>Intente observar la habitación. Al principio será imaginación, luego visión real.</li>
-                <li>Viaje a lugares cercanos, luego lejanos.</li>
-                <li>No hay cordón de plata en el viaje mental, por lo que es más seguro que el astral.</li>
+                <li>Entre en profundo vacío mental (Grado 1).</li>
+                <li>Imagine que su conciencia se desliza fuera de su cuerpo físico y mental.</li>
+                <li>Visualícese de pie junto a su cuerpo. Intente ver la habitación desde esa perspectiva.</li>
+                <li>Progrese a viajar a lugares cercanos, luego remotos. No hay tiempo ni espacio en el plano mental.</li>
             </ol>
+            <p><b>Meta:</b> Viajar a cualquier lugar del planeta al instante, observando con claridad.</p>
         `,
-        'g8_astral': `
-            <h3>Fluidos Eléctrico y Magnético</h3>
-            <p>El Gran Arcano. Dominio de los dos fluidos primordiales del universo.</p>
-            <ul>
-                <li><b>Fluido Eléctrico (Fuego/Aire):</b> Origen de la luz, el calor y la expansión. Color Rojo. Se proyecta desde el centro hacia afuera.</li>
-                <li><b>Fluido Magnético (Agua/Tierra):</b> Origen del peso, frío y contracción. Color Azul. Se proyecta de afuera hacia adentro.</li>
-            </ul>
+        'g8_a_fluids': `
+            <h3>Dominio de los Fluidos Eléctrico y Magnético</h3>
+            <p>El Gran Arcano. La manipulación de las fuerzas que sustentan la creación.</p>
+            <p><b>Instrucción (Inductivo - Absorción):</b></p>
+            <ol>
+                <li><b>Eléctrico (Rojo, expansivo):</b> Imagine el universo lleno de fluido eléctrico. Inhale y absórbalo en su cuerpo, sintiendo calor y presión hasta que su cuerpo irradie como un sol.</li>
+                <li><b>Magnético (Azul, contractivo):</b> Imagine el universo lleno de fluido magnético. Inhale y absórbalo en su cuerpo, sintiendo frío y pesadez hasta que su cuerpo sea un imán.</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> Después de cada ejercicio, SIEMPRE disuelva el fluido en el universo para evitar sobrecargas y daños al cuerpo.</div>
+            <p><b>Instrucción (Deductivo - Proyección):</b> Inhale el fluido, reténgalo y luego proyéctelo fuera del cuerpo hacia el universo. Este es el método para influenciar.</p>
         `,
-        'g8_physical': `
-            <h3>Condensadores Fluídicos</h3>
-            <p>Creación de sustancias alquímicas capaces de retener cargas mágicas enormes.</p>
-            <p><b>Condensador Simple:</b> Infusión muy fuerte de manzanilla.</p>
-            <p><b>Condensador Compuesto:</b> Mezclas complejas de hierbas, metales (tintura de oro) y a veces fluidos corporales (sangre/esperma - solo para uso personal). Se usan para pintar espejos mágicos, cargar varas o consumir en dosis homeopáticas.</p>
+        'g8_p_condens': `
+            <h3>Preparación de Condensadores Fluídicos (II)</h3>
+            <p>Creación avanzada de sustancias alquímicas capaces de retener cargas mágicas enormes.</p>
+            <p><b>Condensador Compuesto (Universal):</b> Se crea mezclando extractos de diversas hierbas (angélica, salvia, tilo, pepino, acacia, manzanilla, azucena, canela, ortiga, menta, álamo, violeta, sauce, tabaco) con tintura de oro. Se carga mágicamente con un deseo universal.</p>
+            <p><b>Uso:</b> Para pintar espejos mágicos, cargar varas, amuletos, o consumo personal (diluido homeopáticamente) para fortalecer el alma y el cuerpo.</p>
         `,
 
         // --- GRADO IX ---
-        'g9_mental': `
-            <h3>Visión en el Espejo Mágico</h3>
-            <p>Uso avanzado del espejo (construido y cargado previamente).</p>
+        'g9_m_mirror': `
+            <h3>Espejo Mágico (Uso Avanzado)</h3>
+            <p>El espejo se convierte en un portal y un instrumento de influencia.</p>
+            <p><b>Funciones:</b></p>
             <ul>
-                <li><b>Visión a través del Espacio:</b> Ver lugares remotos.</li>
-                <li><b>Visión a través del Tiempo:</b> Ver el pasado (Akasha) o probabilidades futuras.</li>
-                <li><b>Influencia:</b> Enviar energía o elementales a través del espejo a una persona distante.</li>
+                <li><b>Visión a Distancia:</b> Vea lugares remotos, personas y eventos actuales.</li>
+                <li><b>Visión a través del Tiempo:</b> Acceda al Akasha para ver el pasado y las probabilidades del futuro.</li>
+                <li><b>Proyección de Influencias:</b> Envíe energía, elementales o pensamientos a personas distantes a través del espejo.</li>
             </ul>
         `,
-        'g9_astral': `
-            <h3>Viaje Astral</h3>
-            <p>La separación completa del cuerpo Astral (Alma) del físico.</p>
-            <ul>
-                <li>A diferencia del viaje mental, aquí se lleva la "matriz astral".</li>
-                <li>Usted está conectado al físico por el <b>Cordón de Plata</b>. Si se rompe, ocurre la muerte física.</li>
-                <li>Permite acción física a distancia y contacto tangible con entidades.</li>
-                <li>Peligroso si no se tiene equilibrio mágico.</li>
-            </ul>
+        'g9_a_travel': `
+            <h3>Viaje Astral (Proyección del Alma)</h3>
+            <p>La separación consciente del cuerpo Astral (alma) del cuerpo físico.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Relaje el cuerpo físico hasta un estado de catalepsia (muerte aparente).</li>
+                <li>Imagine que su cuerpo astral se desliza fuera del físico, conectado por el <strong>Cordón de Plata</strong>.</li>
+                <li>Viaje por el plano astral.</li>
+                <li>Para regresar, visualice el cuerpo astral volviendo al físico y respire profundamente.</li>
+            </ol>
+            <div class="warning-box"><b>¡ADVERTENCIA DE PELIGRO!</b> El cordón de plata es vital. Si se rompe o se daña por un impacto físico en el cuerpo astral o por un choque repentino con el cuerpo físico, ocurre la muerte. NUNCA realice este ejercicio si no está preparado.</div>
         `,
-        'g9_physical': `
-            <h3>Tratamiento con Fluido Electromagnético (Volts)</h3>
-            <p>Creación de "Volts" (esferas de energía concentrada) para alterar el destino, proteger o curar enfermedades graves. Carga de Talismanes permanentes usando los fluidos universales.</p>
+        'g9_p_volts': `
+            <h3>Carga de Volts y Talismanes</h3>
+            <p>Creación de "Volts" (esferas de energía concentrada) y Talismanes permanentes.</p>
+            <p><b>Instrucción (Volt Electromagnético):</b></p>
+            <ol>
+                <li>Proyecte fluido eléctrico (rojo) desde su lado derecho del cuerpo formando una esfera brillante.</li>
+                <li>Proyecte fluido magnético (azul) desde su lado izquierdo del cuerpo, envolviendo la esfera eléctrica.</li>
+                <li>Esto crea un "Volt" electromagnético (púrpura). Impregne este volt con su deseo.</li>
+            </ol>
+            <p><b>Talismanes:</b> Cargue objetos (piedras, metales) con estos volts o con su voluntad directa para fines específicos (protección, suerte, amor).</p>
         `,
 
         // --- GRADO X ---
-        'g10_mental': `
-            <h3>Ascensión a los Planos (Esferas)</h3>
-            <p>El mago eleva su espíritu a las esferas planetarias (Árbol de la Vida).</p>
-            <ul>
-                <li>Esfera de la Luna.</li>
-                <li>Esfera de Mercurio.</li>
-                <li>Esfera de Venus.</li>
-                <li>Esfera del Sol, etc.</li>
-            </ul>
-            <p>Contactar con las inteligencias de cada esfera y aprender sus secretos.</p>
-        `,
-        'g10_astral': `
-            <h3>Comunión con la Deidad</h3>
-            <p>El paso final. Unificación con el Dios personal.</p>
-            <p>Meditación profunda en las 4 virtudes divinas hasta convertirse en ellas:</p>
+        'g10_m_planes': `
+            <h3>Ascensión a los Planos Superiores (Esferas Planetarias)</h3>
+            <p>El mago eleva su espíritu a las esferas del Árbol de la Vida para contactar con inteligencias superiores.</p>
+            <p><b>Instrucción:</b></p>
             <ol>
-                <li><b>Omnipotencia (Fuego).</b></li>
-                <li><b>Sabiduría/Omnisciencia (Aire).</b></li>
-                <li><b>Amor/Misericordia (Agua).</b></li>
-                <li><b>Inmortalidad/Inmutabilidad (Tierra).</b></li>
+                <li>Entre en trance Akáshico (Grado 6).</li>
+                <li>Concéntrese en su deseo de ascender a una esfera específica (ej. Luna, Mercurio, Venus, Sol, Marte, Júpiter, Saturno).</li>
+                <li>Sentirá un "remolino" que lo eleva.</li>
+                <li>En cada esfera, intente contactar con sus inteligencias correspondientes para aprender sus leyes y secretos.</li>
+            </ol>
+            <div class="warning-box"><b>Advertencia:</b> Este paso no debe intentarse sin dominar los grados anteriores y tener un carácter impecable, o podría ser dañado por las vibraciones de las esferas.</div>
+        `,
+        'g10_a_deity': `
+            <h3>Comunión con el Dios Personal</h3>
+            <p>La unificación final con la Divina Providencia.</p>
+            <p><b>Instrucción:</b></p>
+            <ol>
+                <li>Medite profundamente en su concepto más elevado de Dios.</li>
+                <li>Concéntrese en las cuatro virtudes divinas (Fuego, Aire, Agua, Tierra):
+                    <ul>
+                        <li><b>Omnipotencia (Fuego).</b></li>
+                        <li><b>Sabiduría/Omnisciencia (Aire).</b></li>
+                        <li><b>Amor/Misericordia (Agua).</b></li>
+                        <li><b>Inmortalidad/Inmutabilidad (Tierra).</b></li>
+                    </ul>
+                </li>
+                <li>Sienta que usted SE CONVIERTE en esas virtudes. No es una adoración externa, sino una fusión interna.</li>
             </ol>
         `,
-        'g10_physical': `
-            <h3>Poderes Externos y Cábala</h3>
-            <p>El Adepto. Uso de la palabra mágica (Cábala) para alterar la realidad física instantáneamente. Facultades como la teletransportación, invisibilidad física y materialización.</p>
+        'g10_p_powers': `
+            <h3>Poderes Externos y Cábala Práctica</h3>
+            <p>El Adepto. El dominio de la palabra mágica y sus efectos físicos directos.</p>
+            <p><b>Instrucción:</b></p>
+            <ul>
+                <li>Uso de la **Llave Cuádruple (Jod-He-Vau-He)** para la creación directa.</li>
+                <li>Pronunciar letras cósmicas con conciencia mental, astral y física para materializar deseos.</li>
+                <li>Facultades como la teletransportación de objetos, invisibilidad física y materialización directa.</li>
+            </ul>
         `,
 
         // --- HERRAMIENTAS ---
-        'tool_mirror': `<h3>El Espejo Mágico</h3><p><b>Material:</b> Vidrio cóncavo (como de reloj antiguo) o superficie plana negra brillante.<br><b>Construcción:</b> Limpie el vidrio perfectamente. Aplique varias capas de laca negra brillante o nitrato de plata en el lado convexo (trasero). Puede añadir gotas de condensador fluídico en la pintura.<br><b>Uso:</b> Cárgalo con Akasha o Luz imaginaria. No mires tu reflejo físico (desenfoca la vista), mira "a través" de la superficie hacia el infinito negro. Sirve para desarrollar la visión astral y contactar inteligencias.</p>`,
-        'tool_wand': `<h3>La Vara Mágica</h3><p>Simboliza la Voluntad Absoluta y el Elemento Fuego/Aire.<br><b>Simple:</b> Rama de avellano cortada con cuchillo virgen al amanecer. Limpia y magnetizada.<br><b>Compleja (Modelo Bardon):</b> Tubo de acero con un hilo de cobre en el centro, aislado, con condensador sólido o líquido dentro. Polarizada (+/-).<br><b>Uso:</b> Para proyectar fuerza concentrada, trazar círculos de protección y mandar a seres elementales.</p>`,
-        'tool_lamp': `<h3>La Lámpara Mágica</h3><p>Una lámpara de aceite o eléctrica simple.<br><b>Uso:</b> Se cubre con papel celofán o vidrio de colores para generar atmósferas específicas en la habitación ritual.<br>Rojo = Fuego / Voluntad.<br>Azul = Aire / Inteligencia.<br>Verde = Agua / Sentimiento.<br>Amarillo = Tierra / Conciencia.<br>Violeta = Akasha / Misterio.</p>`,
-        'tool_fluid': `<h3>Condensadores Fluídicos</h3><p>Sustancias capaces de retener y amplificar cargas mágicas.<br><b>Simple:</b> Infusión muy fuerte de manzanilla o té negro.<br><b>Compuesto Universal:</b> Mezcla de extractos alcohólicos de: Angélica, Salvia, Tilo, Pepino, Acacia, Manzanilla, Azucena, Canela, Ortiga, Menta, Álamo, Violeta, Sauce, Tabaco + Tintura de Oro.<br><b>Uso:</b> Pintar espejos, cargar varas o consumo personal (diluido homeopáticamente).</p>`,
-        'tool_pentacle': `<h3>El Pentáculo</h3><p>Disco de cera virgen, madera o metal que simboliza el cuerpo y el elemento Tierra.<br><b>Uso:</b> Se graba con símbolos pertinentes a la operación. Se usa para protección, para evocar energías terrestres y como "tierra" para descargar energías sobrantes.</p>`
+        'tool_mirror': `<h3>El Espejo Mágico</h3><p><b>Material:</b> Vidrio cóncavo (como de reloj antiguo) o superficie plana negra brillante.<br><b>Construcción:</b> Limpie el vidrio. Aplique varias capas de laca negra brillante o nitrato de plata en el lado convexo (trasero). Puede añadir gotas de condensador fluídico en la pintura.<br><b>Uso:</b> Cárgalo con Akasha o Luz imaginaria. No mires tu reflejo físico (desenfoca la vista), mira "a través" de la superficie hacia el infinito negro. Sirve para desarrollar la visión astral y contactar inteligencias.</p>`,
+        'tool_wand': `<h3>La Vara Mágica</h3><p>Simboliza la Voluntad Absoluta y el Elemento Fuego/Aire.<br><b>Simple:</b> Rama de avellano (cortada virgen) o fresno. Limpia y magnetizada.<br><b>Compleja (Modelo Bardon):</b> Tubo de acero (magneto) con un hilo de cobre en el centro, aislado, con condensador sólido o líquido dentro. Polarizada (+/-).<br><b>Uso:</b> Para proyectar fuerza concentrada, trazar círculos de protección, cargar objetos y mandar a seres elementales.</p>`,
+        'tool_lamp': `<h3>La Lámpara Mágica (Linterna Mágica)</h3><p>Instrumento para crear atmósferas elementales y planetarias en el espacio ritual.<br><b>Construcción:</b> Una lámpara de aceite o eléctrica simple. Se cubre con papel celofán o vidrios de colores.<br><b>Colores y Elementos:</b><br>Rojo: Fuego (Voluntad).<br>Azul: Aire (Intelecto).<br>Verde: Agua (Sentimiento).<br>Amarillo: Tierra (Conciencia).<br>Violeta/Negro: Akasha.</p>`,
+        'tool_fluid': `<h3>Condensadores Fluídicos</h3><p>Sustancias líquidas o sólidas capaces de retener y amplificar cargas mágicas. Son como baterías energéticas.<br><b>Simple:</b> Infusión muy fuerte de manzanilla, té negro o lila.<br><b>Compuesto (Universal):</b> Mezclas complejas de extractos alcohólicos de diversas hierbas (Angélica, Salvia, Tilo, Pepino, Acacia, Manzanilla, Azucena, Canela, Ortiga, Menta, Álamo, Violeta, Sauce, Tabaco) + Tintura de Oro.<br><b>Uso:</b> Pintar espejos mágicos, impregnar varas, amuletos, o consumo personal (diluido homeopáticamente) para fortalecer el alma y el cuerpo.</p>`,
+        'tool_pentacle': `<h3>El Pentáculo</h3><p>Disco de cera virgen, madera o metal que simboliza el cuerpo y el elemento Tierra. Se usa como un "suelo mágico".<br><b>Uso:</b> Se graba con símbolos pertinentes a la operación. Se usa para protección, para evocar energías terrestres y como "tierra" para descargar energías sobrantes de los elementales.</p>`
     };
 
-    // --- 2. CONFIGURACIÓN DE GRADOS Y REPETICIONES ---
+    /* =========================================
+       CONFIGURACIÓN DE GRADOS (10 GRADOS)
+       ========================================= */
     const gradesData = [
         {
             id: 'g1', 
-            title: 'Grado I: El Iniciado', 
-            sub: 'Dominio de Pensamientos y Elementos Básicos',
+            title: 'Grado I', 
+            sub: 'Fundamentos del Yo',
             tasks: [
-                {id: 't1_1', text: 'Mental: Control del Pensamiento (Observador)', target: 14, ref: 'g1_m_obs'},
-                {id: 't1_2', text: 'Mental: Disciplina (Un solo pensamiento)', target: 14, ref: 'g1_m_disc'},
-                {id: 't1_3', text: 'Mental: Vacío Mental', target: 21, ref: 'g1_m_vaci'},
-                {id: 't1_4', text: 'Astral: El Espejo del Alma', target: 14, ref: 'g1_a_magic'},
-                {id: 't1_5', text: 'Físico: Higiene Energética', target: 30, ref: 'g1_p_skin'},
-                {id: 't1_6', text: 'Físico: Respiración Consciente', target: 30, ref: 'g1_p_breath'},
-                {id: 't1_7', text: 'Físico: Magia del Agua y Comida', target: 30, ref: 'g1_p_euc'}
+                {id: 't1_1', text: 'Mental: Control del Pensamiento', type: 'mental', target: 14, ref: 'g1_m_obs'},
+                {id: 't1_2', text: 'Mental: Disciplina (Un solo pensamiento)', type: 'mental', target: 14, ref: 'g1_m_disc'},
+                {id: 't1_3', text: 'Mental: Vacío Mental', type: 'mental', target: 21, ref: 'g1_m_vaci'},
+                {id: 't1_4', text: 'Astral: Espejo del Alma (Introspección)', type: 'astral', target: 14, ref: 'g1_a_magic'},
+                {id: 't1_5', text: 'Físico: Higiene Energética', type: 'fisico', target: 30, ref: 'g1_p_skin'},
+                {id: 't1_6', text: 'Físico: Respiración Consciente', type: 'fisico', target: 30, ref: 'g1_p_breath'},
+                {id: 't1_7', text: 'Físico: Magia del Agua y Comida', type: 'fisico', target: 30, ref: 'g1_p_euc'}
             ]
         },
         {
             id: 'g2', 
-            title: 'Grado II: Concentración', 
-            sub: 'Autosugestión y Refinamiento',
+            title: 'Grado II', 
+            sub: 'Autosugestión y Concentración Sensorial',
             tasks: [
-                {id: 't2_1', text: 'Mental: Autosugestión', target: 21, ref: 'g2_mental'},
-                {id: 't2_2', text: 'Mental: Concentración Sensorial', target: 14, ref: 'g2_sensory'},
-                {id: 't2_3', text: 'Astral: Transformación del Carácter', target: 21, ref: 'g2_astral'},
-                {id: 't2_4', text: 'Físico: Respiración por los Poros', target: 14, ref: 'g2_physical'},
-                {id: 't2_5', text: 'Físico: Dominio del Cuerpo', target: 14, ref: 'g2_body'}
+                {id: 't2_1', text: 'Mental: Autosugestión', type: 'mental', target: 21, ref: 'g2_mental'},
+                {id: 't2_2', text: 'Mental: Concentración Sensorial (5 sentidos)', type: 'mental', target: 14, ref: 'g2_sensory'},
+                {id: 't2_3', text: 'Astral: Transmutación del Carácter', type: 'astral', target: 21, ref: 'g2_astral'},
+                {id: 't2_4', text: 'Físico: Respiración por los Poros', type: 'fisico', target: 14, ref: 'g2_physical'},
+                {id: 't2_5', text: 'Físico: Dominio del Cuerpo (Inmovilidad)', type: 'fisico', target: 14, ref: 'g2_body'}
             ]
         },
         {
             id: 'g3', 
-            title: 'Grado III: Los Elementos', 
-            sub: 'Respiración Elemental y Proyección',
+            title: 'Grado III', 
+            sub: 'Respiración y Proyección Elemental',
             tasks: [
-                {id: 't3_1', text: 'Mental: Visualización Multisensorial', target: 14, ref: 'g3_mental'},
-                {id: 't3_2', text: 'Mental: Proyección de Imágenes', target: 14, ref: 'g3_mental'},
-                {id: 't3_3', text: 'Astral: Inhalación de Elementos', target: 21, ref: 'g3_astral'},
-                {id: 't3_4', text: 'Físico: Acumulación Vital', target: 14, ref: 'g3_physical'}
+                {id: 't3_1', text: 'Mental: Visualización Multisensorial', type: 'mental', target: 14, ref: 'g3_mental'},
+                {id: 't3_2', text: 'Mental: Proyección de Imágenes Externas', type: 'mental', target: 14, ref: 'g3_mental'},
+                {id: 't3_3', text: 'Astral: Inhalación de Elementos', type: 'astral', target: 21, ref: 'g3_astral'},
+                {id: 't3_4', text: 'Físico: Acumulación de Energía Vital', type: 'fisico', target: 14, ref: 'g3_physical'}
             ]
         },
         {
             id: 'g4', 
-            title: 'Grado IV: Rituales', 
-            sub: 'Transferencia de Conciencia',
+            title: 'Grado IV', 
+            sub: 'Rituales y Transferencia de Conciencia',
             tasks: [
-                {id: 't4_1', text: 'Mental: Transferencia de Conciencia', target: 14, ref: 'g4_mental'},
-                {id: 't4_2', text: 'Astral: Acumulación Elemental (Cuerpo)', target: 20, ref: 'g4_astral'},
-                {id: 't4_3', text: 'Físico: Creación de Rituales', target: 7, ref: 'g4_physical'}
+                {id: 't4_1', text: 'Mental: Transposición de Conciencia', type: 'mental', target: 14, ref: 'g4_mental'},
+                {id: 't4_2', text: 'Astral: Acumulación Elemental (Cuerpo)', type: 'astral', target: 20, ref: 'g4_astral'},
+                {id: 't4_3', text: 'Físico: Creación de Rituales', type: 'fisico', target: 7, ref: 'g4_physical'}
             ]
         },
         {
             id: 'g5', 
-            title: 'Grado V: Alquimia Espacial', 
-            sub: 'Magia del Espacio y Comunicación',
+            title: 'Grado V', 
+            sub: 'Akasha y Comunicación Mágica',
             tasks: [
-                {id: 't5_1', text: 'Mental: Magia del Espacio', target: 14, ref: 'g5_mental'},
-                {id: 't5_2', text: 'Astral: Proyección Exterior', target: 20, ref: 'g5_astral'},
-                {id: 't5_3', text: 'Físico: Comunicación Pasiva', target: 14, ref: 'g5_physical'}
+                {id: 't5_1', text: 'Mental: Magia del Espacio (Punto Central)', type: 'mental', target: 14, ref: 'g5_m_space'},
+                {id: 't5_2', text: 'Astral: Proyección Exterior de Elementos', type: 'astral', target: 20, ref: 'g5_a_proj'},
+                {id: 't5_3', text: 'Físico: Comunicación Pasiva (Péndulo/Mano)', type: 'fisico', target: 14, ref: 'g5_p_comm'}
             ]
         },
         {
             id: 'g6', 
-            title: 'Grado VI: Akasha', 
-            sub: 'Elementales y Meditación Espiritual',
+            title: 'Grado VI', 
+            sub: 'Elementales y Trance Akáshico',
             tasks: [
-                {id: 't6_1', text: 'Mental: Meditación en el Espíritu', target: 14, ref: 'g6_mental'},
-                {id: 't6_2', text: 'Astral: Trance de Akasha', target: 14, ref: 'g6_astral'},
-                {id: 't6_3', text: 'Físico: Creación de Elementales', target: 7, ref: 'g6_physical'}
+                {id: 't6_1', text: 'Mental: Meditación en el Propio Espíritu', type: 'mental', target: 14, ref: 'g6_m_spirit'},
+                {id: 't6_2', text: 'Astral: Inducción de Trance Akáshico', type: 'astral', target: 14, ref: 'g6_a_akasha'},
+                {id: 't6_3', text: 'Físico: Generación de Elementales', type: 'fisico', target: 7, ref: 'g6_p_elem'}
             ]
         },
         {
             id: 'g7', 
-            title: 'Grado VII: Sentidos Astrales', 
-            sub: 'Clarividencia y Elementarios',
+            title: 'Grado VII', 
+            sub: 'Desarrollo de Sentidos Astrales',
             tasks: [
-                {id: 't7_1', text: 'Mental: Análisis del Espíritu', target: 7, ref: 'g7_mental'},
-                {id: 't7_2', text: 'Astral: Clarividencia', target: 21, ref: 'g7_astral'},
-                {id: 't7_3', text: 'Físico: Elementarios', target: 7, ref: 'g7_physical'}
+                {id: 't7_1', text: 'Mental: Análisis del Espíritu (II)', type: 'mental', target: 7, ref: 'g7_m_spirit'},
+                {id: 't7_2', text: 'Astral: Desarrollo de Clarividencia', type: 'astral', target: 21, ref: 'g7_a_clariv'},
+                {id: 't7_3', text: 'Astral: Desarrollo de Clariaudiencia', type: 'astral', target: 21, ref: 'g7_a_clariau'},
+                {id: 't7_4', text: 'Astral: Desarrollo de Clarinsentencia', type: 'astral', target: 21, ref: 'g7_a_sensit'},
+                {id: 't7_5', text: 'Físico: Generación de Elementarios', type: 'fisico', target: 7, ref: 'g7_p_elem'}
             ]
         },
         {
             id: 'g8', 
-            title: 'Grado VIII: Viaje Mental', 
-            sub: 'Fluidos y Separación',
+            title: 'Grado VIII', 
+            sub: 'Viaje Mental y Fluidos',
             tasks: [
-                {id: 't8_1', text: 'Mental: Viaje Mental', target: 21, ref: 'g8_mental'},
-                {id: 't8_2', text: 'Astral: Control de Fluidos Eléc./Mag.', target: 21, ref: 'g8_astral'},
-                {id: 't8_3', text: 'Físico: Condensadores Fluídicos', target: 7, ref: 'g8_physical'}
+                {id: 't8_1', text: 'Mental: Viaje Mental (Proyección del Espíritu)', type: 'mental', target: 21, ref: 'g8_m_travel'},
+                {id: 't8_2', text: 'Astral: Dominio de Fluidos Eléctrico y Magnético', type: 'astral', target: 21, ref: 'g8_a_fluids'},
+                {id: 't8_3', text: 'Físico: Preparación de Condensadores Fluídicos (II)', type: 'fisico', target: 7, ref: 'g8_p_condens'}
             ]
         },
         {
             id: 'g9', 
-            title: 'Grado IX: Viaje Astral', 
-            sub: 'Espejo Mágico y Volts',
+            title: 'Grado IX', 
+            sub: 'Viaje Astral y Talismanes',
             tasks: [
-                {id: 't9_1', text: 'Mental: Visión en el Espejo Mágico', target: 14, ref: 'g9_mental'},
-                {id: 't9_2', text: 'Astral: Viaje Astral', target: 21, ref: 'g9_astral'},
-                {id: 't9_3', text: 'Físico: Volts y Talismanes', target: 7, ref: 'g9_physical'}
+                {id: 't9_1', text: 'Mental: Espejo Mágico (Uso Avanzado)', type: 'mental', target: 14, ref: 'g9_m_mirror'},
+                {id: 't9_2', text: 'Astral: Viaje Astral (Proyección del Alma)', type: 'astral', target: 21, ref: 'g9_a_travel'},
+                {id: 't9_3', text: 'Físico: Carga de Volts y Talismanes', type: 'fisico', target: 7, ref: 'g9_p_volts'}
             ]
         },
         {
             id: 'g10', 
-            title: 'Grado X: El Adepto', 
-            sub: 'Unión Divina y Esferas',
+            title: 'Grado X', 
+            sub: 'Unión Divina y Maestría Universal',
             tasks: [
-                {id: 't10_1', text: 'Mental: Ascensión a los Planos', target: 30, ref: 'g10_mental'},
-                {id: 't10_2', text: 'Astral: Comunión con la Deidad', target: 30, ref: 'g10_astral'},
-                {id: 't10_3', text: 'Físico: Poderes Externos', target: 14, ref: 'g10_physical'}
+                {id: 't10_1', text: 'Mental: Ascensión a los Planos Superiores', type: 'mental', target: 30, ref: 'g10_m_planes'},
+                {id: 't10_2', text: 'Astral: Comunión con el Dios Personal', type: 'astral', target: 30, ref: 'g10_a_deity'},
+                {id: 't10_3', text: 'Físico: Poderes Externos y Cábala Práctica', type: 'fisico', target: 14, ref: 'g10_p_powers'}
             ]
         }
     ];
 
-    // --- 3. LÓGICA DE LA APLICACIÓN ---
+    /* =========================================
+       LÓGICA DE LA APLICACIÓN (CORREGIDA)
+       ========================================= */
 
-    let userProgress = JSON.parse(localStorage.getItem('bardonMasterProgress')) || {};
+    let userProgress = JSON.parse(localStorage.getItem('bardonFullProgress')) || {};
+    let currentOpenGradeId = localStorage.getItem('currentOpenGrade') || null; // Persistir el estado del grado abierto
 
     // Inicializar progreso si está vacío
     if (Object.keys(userProgress).length === 0) {
         gradesData.forEach(g => {
             g.tasks.forEach(t => userProgress[t.id] = 0);
         });
-        localStorage.setItem('bardonMasterProgress', JSON.stringify(userProgress));
+        localStorage.setItem('bardonFullProgress', JSON.stringify(userProgress));
     }
 
     function renderView(viewName) {
-        // Actualizar botones nav
+        // Actualizar estilos de los botones de navegación
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         if(viewName === 'training') document.querySelectorAll('.nav-btn')[0].classList.add('active');
         if(viewName === 'tools') document.querySelectorAll('.nav-btn')[1].classList.add('active');
@@ -786,22 +879,22 @@
         if (viewName === 'tools') renderTools(container);
         if (viewName === 'library') renderLibrary(container);
         
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); // Desplazar al inicio de la página al cambiar de vista
     }
 
     function renderTraining(container) {
-        let isPreviousGradeComplete = true;
+        let isPreviousGradeComplete = true; // Para el sistema de bloqueo
 
         gradesData.forEach((grade) => {
-            let currentGradeComplete = true;
+            let currentGradeTasksComplete = true;
             grade.tasks.forEach(t => {
-                if (userProgress[t.id] < t.target) currentGradeComplete = false;
+                if (userProgress[t.id] < t.target) currentGradeTasksComplete = false;
             });
 
             const isLocked = !isPreviousGradeComplete;
-            const completedClass = currentGradeComplete ? 'completed' : '';
+            const completedClass = currentGradeTasksComplete ? 'completed' : '';
             const lockedClass = isLocked ? 'locked' : '';
-            const icon = isLocked ? '🔒' : (currentGradeComplete ? '✓' : '✧');
+            const icon = isLocked ? '🔒' : (currentGradeTasksComplete ? '✓' : '✧');
 
             const gradeHTML = document.createElement('div');
             gradeHTML.className = 'grade-wrapper';
@@ -819,18 +912,24 @@
             `;
             container.appendChild(gradeHTML);
 
-            if (!currentGradeComplete) isPreviousGradeComplete = false;
+            // Abre el grado si es el que estaba abierto ANTES de re-renderizar
+            if (currentOpenGradeId === `list-${grade.id}` && !isLocked) {
+                 document.getElementById(`list-${grade.id}`).classList.add('open');
+            }
+
+            if (!currentGradeTasksComplete) isPreviousGradeComplete = false; // Actualiza el estado de bloqueo para el siguiente grado
         });
         
+        // Mensaje final si todos los grados están completos
         if(isPreviousGradeComplete) {
              const congrats = document.createElement('div');
-             congrats.innerHTML = `<div style="text-align:center; padding:20px; color:var(--accent-gold); border:1px solid var(--accent-gold); margin-top:20px; border-radius:10px;"><h3>¡MAESTRÍA ALCANZADA!</h3><p>Has completado el camino de la Iniciación.</p></div>`;
+             congrats.innerHTML = `<div style="text-align:center; padding:20px; color:var(--accent-gold-light); border:1px solid var(--accent-gold); margin-top:30px; border-radius:10px; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);"><h3>¡MAESTRÍA ALCANZADA!</h3><p>Has completado el camino de la Iniciación al Hermetismo.</p><p>Que la Luz Divina te guíe.</p></div>`;
              container.appendChild(congrats);
         }
     }
 
     function renderTasks(tasks, isLocked) {
-        if (isLocked) return `<div style="padding:15px; color:#666; font-style:italic;">Completa el grado anterior para desbloquear los misterios.</div>`;
+        if (isLocked) return `<div style="padding:15px; color:var(--text-muted); font-style:italic; text-align:center;">Completa el grado anterior para desbloquear los misterios de este nivel.</div>`;
         
         return tasks.map(t => {
             const currentReps = userProgress[t.id] || 0;
@@ -839,19 +938,20 @@
             const btnText = isDone ? 'Completado' : 'Registrar (+1)';
             const btnDisabled = isDone ? 'disabled' : '';
             
-            let tagType = 'mental';
-            let tagText = 'Mental';
-            if(t.text.includes('Astral') || t.text.includes('Espejo') || t.text.includes('Inhalación')) { tagType = 'astral'; tagText = 'Astral'; }
-            if(t.text.includes('Físico') || t.text.includes('Cuerpo') || t.text.includes('Higiene')) { tagType = 'fisico'; tagText = 'Físico'; }
+            // Determinar clase para el tag
+            let tagClass = '';
+            if(t.type === 'mental') tagClass = 'mental';
+            else if(t.type === 'astral') tagClass = 'astral';
+            else if(t.type === 'fisico') tagClass = 'fisico';
 
             return `
             <div class="exercise-card">
-                <span class="ex-tag ${tagType}">${tagText}</span>
+                <span class="ex-tag ${tagClass}">${t.type.toUpperCase()}</span>
                 <div class="ex-title">${t.text}</div>
                 
                 <div class="progress-container">
                     <div class="progress-info">
-                        <span>Progreso: ${currentReps}/${t.target}</span>
+                        <span>Progreso: ${currentReps}/${t.target} días</span>
                         <span>${percentage}%</span>
                     </div>
                     <div class="progress-track">
@@ -879,18 +979,17 @@
                 <div class="tool-item" onclick="showTheory('tool_wand', 'La Vara Mágica')"><span class="tool-icon">🪄</span><div class="tool-text">Vara de Poder</div></div>
                 <div class="tool-item" onclick="showTheory('tool_fluid', 'Condensadores')"><span class="tool-icon">⚗️</span><div class="tool-text">Condensadores</div></div>
                 <div class="tool-item" onclick="showTheory('tool_pentacle', 'El Pentáculo')"><span class="tool-icon">⛤</span><div class="tool-text">Pentáculo</div></div>
-                 <div class="tool-item" onclick="showTheory('tool_lamp', 'La Lámpara Mágica')"><span class="tool-icon">🏮</span><div class="tool-text">Lámpara</div></div>
+                 <div class="tool-item" onclick="showTheory('tool_lamp', 'La Lámpara Mágica')"><span class="tool-icon">🏮</span><div class="tool-text">Lámpara Mágica</div></div>
             </div>
-
-            <h3 style="color:var(--accent-teal-bright); margin-top:30px; text-align:center;">Los Tattwas (Elementos)</h3>
+            <h3 style="color:var(--accent-teal-bright); margin-top:30px; text-align:center; font-family:'Cinzel', serif;">Los Tattwas (Símbolos Elementales)</h3>
             <div style="background:var(--bg-card); padding:20px; border-radius:10px; margin-top:10px; text-align:center; border:1px solid rgba(255,255,255,0.05);">
-                <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Símbolos visuales para la meditación elemental.</p>
+                <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Formas geométricas para la meditación elemental y Akáshica.</p>
                 <div class="tattwa-box">
-                    <div class="tattwa-wrapper"><div class="tattwa-akasha"></div><small style="font-size:0.7em; color:#666">Akasha</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-fire"></div><small style="font-size:0.7em; color:#666">Tejas</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-air"></div><small style="font-size:0.7em; color:#666">Waju</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-water"></div><small style="font-size:0.7em; color:#666">Apas</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-earth"></div><small style="font-size:0.7em; color:#666">Prithivi</small></div>
+                    <div class="tattwa-wrapper"><div class="tattwa-akasha"></div><small style="font-size:0.7em; color:var(--text-muted)">Akasha (Éter)</small></div>
+                    <div class="tattwa-wrapper"><div class="tattwa-fire"></div><small style="font-size:0.7em; color:var(--text-muted)">Tejas (Fuego)</small></div>
+                    <div class="tattwa-wrapper"><div class="tattwa-air"></div><small style="font-size:0.7em; color:var(--text-muted)">Waju (Aire)</small></div>
+                    <div class="tattwa-wrapper"><div class="tattwa-water"></div><small style="font-size:0.7em; color:var(--text-muted)">Apas (Agua)</small></div>
+                    <div class="tattwa-wrapper"><div class="tattwa-earth"></div><small style="font-size:0.7em; color:var(--text-muted)">Prithivi (Tierra)</small></div>
                 </div>
             </div>
         `;
@@ -898,50 +997,126 @@
 
     function renderLibrary(container) {
         container.innerHTML = `
-            <h2 style="color:var(--accent-gold); text-align:center; font-family:'Cinzel', serif; margin-bottom:20px;">Biblioteca Hermética</h2>
-            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-gold);">Iniciación al Hermetismo</div><p class="ex-desc">El curso base de 10 pasos. Trata sobre el equilibrio de los elementos y el dominio del yo.</p></div>
-            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-teal-bright);">La Práctica de la Evocación Mágica</div><p class="ex-desc">Guía para contactar inteligencias de las esferas planetarias. Requiere haber completado el Grado 8 de IIH.</p></div>
-            <div class="exercise-card"><div class="ex-title" style="color:#b388ff;">La Clave de la Verdadera Cábala</div><p class="ex-desc">El uso del Verbo y el Sonido. La magia de las letras.</p></div>
-            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:#666;"><p>"El saber no es suficiente; debemos aplicar. El querer no es suficiente; debemos hacer."</p></div>
+            <h2 style="color:var(--accent-gold); text-align:center; font-family:'Cinzel', serif; margin-bottom:20px;">Archivo Hermético</h2>
+            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-gold);">Iniciación al Hermetismo</div><p class="ex-desc">El curso base de 10 grados de Franz Bardon. Un sendero sistemático para el desarrollo del mago, cubriendo los aspectos mental, astral y físico para alcanzar la maestría.</p></div>
+            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-teal-bright);">La Práctica de la Evocación Mágica</div><p class="ex-desc">La segunda obra de Bardon, guía para contactar inteligencias de las esferas planetarias y elementales. Detalla el uso del círculo mágico, el triángulo y los sigilos.</p></div>
+            <div class="exercise-card"><div class="ex-title" style="color:#b388ff;">La Clave de la Verdadera Cábala</div><p class="ex-desc">La tercera obra de Bardon, que explora el misterio de la palabra, el sonido y las letras cósmicas para la creación mágica. Profundiza en el lenguaje universal.</p></div>
+            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:var(--text-muted);"><p>"El saber no es suficiente; debemos aplicar. El querer no es suficiente; debemos hacer."</p></div>
         `;
     }
 
+    // --- INTERACCIONES Y LÓGICA DE ESTADO ---
+
+    // Función para alternar la visibilidad de la lista de ejercicios de un grado
     function toggleGrade(elementId, isLocked) {
-        if (isLocked) { alert("Completa el grado anterior."); return; }
-        document.getElementById(elementId).classList.toggle('open');
+        if (isLocked) { 
+            // Efecto de vibración para grados bloqueados
+            const header = document.querySelector(`.grade-header.locked[onclick*="${elementId}"]`);
+            if(header) {
+                header.style.animation = 'none'; // Reset animation
+                void header.offsetWidth; // Trigger reflow
+                header.style.animation = 'shake 0.3s'; // Apply shake animation
+            }
+            alert("Este grado está sellado. Completa el grado anterior para obtener la llave.");
+            return; 
+        }
+
+        const el = document.getElementById(elementId);
+        const isOpen = el.classList.contains('open');
+
+        // Cierra todos los demás grados si están abiertos (comportamiento de acordeón)
+        document.querySelectorAll('.exercises-list.open').forEach(list => {
+            if (list.id !== elementId) {
+                list.classList.remove('open');
+            }
+        });
+
+        if (!isOpen) { // Si estaba cerrado, ábrelo
+            el.classList.add('open');
+            currentOpenGradeId = elementId; // Almacena el ID del grado abierto
+        } else { // Si estaba abierto, ciérralo
+            el.classList.remove('open');
+            currentOpenGradeId = null; // No hay ningún grado abierto
+        }
+        localStorage.setItem('currentOpenGrade', currentOpenGradeId); // Persiste el estado
     }
 
+    // Función para añadir progreso a un ejercicio
     function addProgress(taskId, target) {
         if (userProgress[taskId] < target) {
             userProgress[taskId]++;
-            localStorage.setItem('bardonMasterProgress', JSON.stringify(userProgress));
+            localStorage.setItem('bardonFullProgress', JSON.stringify(userProgress));
+            
+            // Re-renderiza la vista de entrenamiento para actualizar las barras y el estado de bloqueo
             renderView('training');
+            
+            // Después de re-renderizar, intenta reabrir el grado que estaba abierto
+            if (currentOpenGradeId) {
+                const el = document.getElementById(currentOpenGradeId);
+                // Asegúrate de que el elemento existe y que su padre (grade-header) no está bloqueado antes de intentar abrirlo
+                if (el && !el.previousElementSibling.classList.contains('locked')) {
+                    el.classList.add('open');
+                } else { // Si el grado previamente abierto se ha bloqueado (ej. al completar un pre-requisito), resetea el estado
+                    currentOpenGradeId = null;
+                    localStorage.removeItem('currentOpenGrade');
+                }
+            }
         }
     }
 
+    // Función para mostrar el modal de teoría
     function showTheory(key, title) {
         const modal = document.getElementById('appModal');
-        const content = libraryData[key] || "<p>Información no disponible.</p>";
-        document.getElementById('modal-body').innerHTML = `<h3>${title}</h3>${content}`;
+        const modalBody = document.getElementById('modal-body');
+        
+        // Limpiar contenido anterior
+        modalBody.innerHTML = '';
+        
+        // Añadir el nuevo contenido
+        const content = libraryData[key] || "<p>Información detallada disponible en los textos originales de Franz Bardon.</p>";
+        modalBody.innerHTML = `<h3>${title}</h3>${content}`;
+        
         modal.style.display = "block";
     }
 
-    function closeModal() { document.getElementById('appModal').style.display = "none"; }
+    // Función para cerrar el modal
+    function closeModal() {
+        document.getElementById('appModal').style.display = "none";
+    }
     
+    // Función para confirmar y reiniciar el progreso
     function resetProgressConfirm() {
-        if(confirm("¿Estás seguro de reiniciar todo el progreso?")) {
-            localStorage.removeItem('bardonMasterProgress');
-            location.reload();
+        if(confirm("ATENCIÓN:\n\nEsto borrará TODO tu progreso de los 10 grados.\n\n¿Estás absolutamente seguro de que deseas reiniciar tu entrenamiento hermético?")) {
+            localStorage.removeItem('bardonFullProgress');
+            localStorage.removeItem('currentOpenGrade'); // También resetea el grado abierto
+            location.reload(); // Recarga la página para aplicar el reset
         }
     }
 
+    // Cerrar modal al hacer clic fuera
     window.onclick = function(event) {
         const modal = document.getElementById('appModal');
-        if (event.target == modal) modal.style.display = "none";
+        if (event.target == modal && modal.style.display === "block") { // Solo cerrar si el modal está visible
+            modal.style.display = "none";
+        }
     }
 
-    // Inicializar
+    // Inicializar la vista de entrenamiento al cargar la página
     renderView('training');
+    
+    // Animación para el efecto de "sacudida" en el bloqueo
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+    `;
+    document.head.appendChild(style);
+
 </script>
 </body>
 </html>
