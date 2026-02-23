@@ -1,961 +1,562 @@
 <!DOCTYPE html>
 <html lang="es">
-<link rel="manifest" href="manifest.json">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Adonai: Sendero Hermético</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0d1b2a">
+    <title>Mindfulness Tracker</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="ojo-de-ra.png">
+
+    <!-- Librería para Gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        /* --- PALETA DE COLORES --- */
         :root {
-            --bg-dark: #080b10;
-            --bg-card: rgba(22, 33, 49, 0.95);
-            --bg-header: rgba(11, 16, 22, 0.98);
-            --accent-gold: #d4af37;
-            --accent-gold-light: #f3e5ab;
-            --accent-teal: #1c5d66;
-            --accent-teal-bright: #4db6ac;
-            --text-main: #e0e0e0;
-            --text-muted: #8c9bb0;
-            --success: #2e7d32;
-            --locked: #444;
-            --border-color: rgba(212, 175, 55, 0.15);
+            --bg-gradient: radial-gradient(circle at top right, #1b3a4b, #0d1b2a, #050b14);
+            --card-bg: #132435;
+            --text-main: #e8d5a5; /* Dorado suave */
+            --accent: #d4af37;    /* Dorado fuerte */
+            --accent-hover: #b5952f;
+            
+            /* Color para el botón LOSS */
+            --loss-bg: #2d6a4f;
+            --loss-shadow: rgba(45, 106, 79, 0.6);
+            --success: #27ae60;
+            --danger: #e74c3c;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 5% 10%, rgba(28, 93, 102, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 95% 90%, rgba(212, 175, 55, 0.08) 0%, transparent 40%);
-            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            padding-bottom: 90px;
-            overflow-x: hidden;
-        }
-
-        /* --- HEADER --- */
-        header {
-            padding: 20px 15px;
-            text-align: center;
-            background: var(--bg-header);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        }
-
-        h1 {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-gold);
-            margin: 0;
-            font-size: 1.5rem;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        }
-
-        .subtitle {
-            font-size: 0.7rem;
-            color: var(--accent-teal-bright);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-top: 5px;
-            opacity: 0.8;
-        }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .container {
-            padding: 20px;
-            max-width: 700px;
-            margin: 0 auto;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        /* --- TARJETAS DE GRADOS --- */
-        .grade-wrapper { margin-bottom: 25px; position: relative; }
-        
-        .grade-wrapper:not(:last-child)::after {
-            content: ''; position: absolute; left: 24px; bottom: -25px; height: 25px; width: 1px;
-            background: linear-gradient(to bottom, var(--accent-gold), rgba(212, 175, 55, 0.05));
-            z-index: 0; opacity: 0.4;
-        }
-
-        .grade-header {
-            background: linear-gradient(145deg, #1f2b3e, #111821);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s;
+            justify-content: center;
+            align-items: center; 
+            min-height: 100vh;
+            text-align: center;
         }
 
-        .grade-header:active { transform: scale(0.99); }
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px 15px;
+            margin: auto;
+            box-sizing: border-box;
+        }
+
+        /* Vistas */
+        .view { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Logo y Encabezados */
+        .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); }
+        h1 { font-size: 24px; color: var(--accent); font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; }
+        h2 { font-size: 18px; color: var(--accent); margin-bottom: 15px; border-bottom: 1px solid var(--accent); padding-bottom: 5px;}
+        p { font-size: 14px; opacity: 0.9; margin-bottom: 25px; line-height: 1.4;}
+
+        /* Botones del Menú Principal */
+        .menu-list { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
+        .btn-menu {
+            background: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 16px; padding: 20px;
+            color: var(--accent); font-size: 18px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: flex-start; transition: all 0.3s;
+        }
+        .btn-menu i { font-size: 30px; margin-right: 15px; font-style: normal; }
+        .btn-menu:hover, .btn-menu:active { background: rgba(212, 175, 55, 0.1); border-color: var(--accent); }
+
+        .btn-full {
+            width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid var(--accent); border-radius: 12px;
+            background: var(--card-bg); color: var(--accent); font-size: 16px; cursor: pointer; font-weight: bold;
+        }
+        .btn-full.primary { background: var(--accent); color: #0d1b2a; }
+        .btn-danger { border-color: rgba(231, 76, 60, 0.5); color: var(--danger); background: rgba(231, 76, 60, 0.05); }
+
+        /* BOTÓN LOSS */
+        .btn-loss { 
+            background-color: var(--loss-bg); border: 2px solid var(--accent); color: var(--text-main);
+            font-size: 24px; font-weight: bold; padding: 40px; border-radius: 50%;
+            margin: 30px auto 40px auto; width: 160px; height: 160px; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 0 20px var(--loss-shadow); transition: transform 0.1s;
+        }
+        .btn-loss:active { transform: scale(0.95); }
+
+        /* Figuras para Visualización */
+        .shape-container { display: flex; justify-content: center; margin: 30px 0; }
+        .shape { width: 120px; height: 120px; display: none; }
+        .shape.star { background: var(--accent); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+        .shape.circle { background: #e74c3c; border-radius: 50%; }
+        .shape.triangle { background: #3498db; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+
+        /* Cronómetro */
+        .timer { font-size: 70px; font-weight: 300; font-variant-numeric: tabular-nums; margin: 10px 0; color: var(--accent); text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        .total-timer { font-size: 16px; color: #a0b2c6; margin-bottom: 20px; display: none; }
+
+        /* Contenedor de Gráficos y Tarjetas */
+        .chart-container { background: var(--card-bg); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 15px 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .history-card { border: 1px solid rgba(212,175,55,0.3); padding: 15px; border-radius: 12px; margin-bottom: 12px; background: var(--card-bg); text-align: left; }
+        .history-card h4 { margin: 0 0 8px 0; color: var(--accent); display: flex; justify-content: space-between;}
+        .ranking-badge { background: var(--accent); color: #0d1b2a; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+
+        /* Notas (Textarea) */
+        textarea {
+            width: 100%; height: 220px; background: rgba(13, 27, 42, 0.8); color: var(--text-main);
+            border: 1px solid var(--accent); border-radius: 12px; padding: 15px;
+            font-family: inherit; font-size: 15px; resize: none; box-sizing: border-box;
+            margin-bottom: 20px; line-height: 1.5;
+        }
+        textarea:focus { outline: none; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
         
-        .grade-header.locked {
-            background: #121212;
-            border-color: #2a2a2a;
-            opacity: 0.7;
-            cursor: not-allowed;
-            filter: grayscale(1);
+        /* Toast Notification */
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: var(--success); color: #fff;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1;
+            left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold;
         }
-
-        .grade-header.completed {
-            border-left: 3px solid var(--success);
-            background: linear-gradient(145deg, #1a241c, #0f1c13);
-        }
-
-        .grade-title { font-family: 'Cinzel', serif; font-weight: 700; color: var(--accent-gold-light); font-size: 1.1rem; }
-        .grade-info { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- LISTA DE EJERCICIOS --- */
-        .exercises-list {
-            display: none;
-            padding: 15px 0 0 10px;
-            margin-left: 15px;
-            border-left: 1px solid rgba(212, 175, 55, 0.1);
-        }
-        .exercises-list.open { display: block; animation: slideDown 0.3s ease-out; }
-
-        .exercise-card {
-            background: var(--bg-card);
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.03);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .ex-tag {
-            position: absolute; top: 0; right: 0;
-            color: #111; font-size: 0.6rem; padding: 2px 8px;
-            border-bottom-left-radius: 6px; font-weight: bold; text-transform: uppercase;
-        }
-        .ex-tag.mental { background: #b39ddb; }
-        .ex-tag.astral { background: #ef9a9a; }
-        .ex-tag.fisico { background: #a5d6a7; }
-
-        .ex-title { font-weight: bold; font-size: 0.95rem; color: #fff; padding-right: 60px; margin-bottom: 15px; }
-
-        /* PROGRESO */
-        .progress-container { margin-bottom: 12px; }
-        .progress-info { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-        .progress-track { background: #0f151c; height: 6px; border-radius: 3px; overflow: hidden; border: 1px solid #333; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-teal), var(--accent-gold)); transition: width 0.4s ease; }
-
-        /* BOTONES */
-        .actions { display: flex; gap: 8px; }
-        .btn {
-            flex: 1; padding: 10px; border: none; border-radius: 4px;
-            font-family: 'Lato', sans-serif; font-weight: bold; font-size: 0.8rem;
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
-        }
-        .btn:active { transform: translateY(2px); }
-        .btn-train { background: var(--accent-gold); color: #0a0a0a; box-shadow: 0 0 10px rgba(212, 175, 55, 0.15); }
-        .btn-train:disabled { background: var(--success); color: white; cursor: default; box-shadow: none; opacity: 0.9; }
-        .btn-theory { background: transparent; border: 1px solid var(--accent-teal); color: var(--accent-teal-bright); }
-
-        /* --- HERRAMIENTAS --- */
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
-        .tool-item {
-            background: var(--bg-card); padding: 20px; border-radius: 8px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s;
-        }
-        .tool-item:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
-        .tool-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-        .tool-text { font-size: 0.9rem; color: #ddd; }
-
-        /* --- MENU INFERIOR --- */
-        .nav-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(8, 11, 16, 0.98); backdrop-filter: blur(15px);
-            display: flex; justify-content: space-around; padding: 10px 0;
-            border-top: 1px solid var(--border-color); z-index: 100;
-        }
-        .nav-btn { background: none; border: none; color: #555; font-size: 0.65rem; display: flex; flex-direction: column; align-items: center; padding: 5px; cursor: pointer; transition: 0.2s; }
-        .nav-btn.active { color: var(--accent-gold); transform: scale(1.1); }
-        .nav-btn svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; }
-
-        /* --- MODAL --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 2000; overflow-y: auto; animation: fadeIn 0.3s; }
-        .modal-content {
-            background: #11161f; margin: 5% auto; width: 90%; max-width: 650px; padding: 25px;
-            border-radius: 8px; border: 1px solid var(--accent-gold); color: #ccc;
-            position: relative; box-shadow: 0 0 40px rgba(212, 175, 55, 0.1);
-        }
-        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 28px; color: var(--accent-gold); cursor: pointer; line-height: 1; }
-        .modal-body { margin-top: 10px; line-height: 1.7; font-size: 0.95rem; }
-        .modal-body h3 { color: var(--accent-gold); font-family: 'Cinzel', serif; border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 25px; font-size: 1.2rem; }
-        .modal-body h3:first-child { margin-top: 0; }
-        .modal-body strong { color: #fff; }
-        .modal-body ul, .modal-body ol { padding-left: 20px; color: #bbb; }
-        .modal-body li { margin-bottom: 8px; }
-        .warning-box { background: rgba(198, 40, 40, 0.1); border-left: 3px solid #c62828; padding: 10px; margin: 15px 0; font-size: 0.9rem; color: #ffcdd2; }
-
-        /* TATTWAS CSS */
-        .tattwa-box { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;}
-        .tattwa-wrapper { text-align: center; }
-        .tattwa-fire { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 50px solid #e53935; margin: 0 auto; filter: drop-shadow(0 0 5px red);}
-        .tattwa-water { width: 50px; height: 25px; background: silver; border-radius: 0 0 50px 50px; margin: 15px auto 0; border: 2px solid #fff; filter: drop-shadow(0 0 5px silver); }
-        .tattwa-air { width: 50px; height: 50px; background: #2196f3; border-radius: 50%; margin: 0 auto; filter: drop-shadow(0 0 5px blue); }
-        .tattwa-earth { width: 50px; height: 50px; background: #fdd835; margin: 0 auto; border: 1px solid #c6a700; filter: drop-shadow(0 0 5px yellow);}
-        .tattwa-akasha { width: 40px; height: 55px; background: #000; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; margin: 0 auto; border: 1px solid #444; filter: drop-shadow(0 0 5px white);}
-
-        @keyframes slideDown { from {opacity: 0; transform: translateY(-10px);} to {opacity: 1; transform: translateY(0);} }
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Adonai</h1>
-    <div class="subtitle">La Senda del Verdadero Adepto</div>
-</header>
-
-<div id="main-view" class="container"></div>
-
-<!-- Menú Inferior -->
-<nav class="nav-bar">
-    <button class="nav-btn active" onclick="renderView('training')">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-        Práctica
-    </button>
-    <button class="nav-btn" onclick="renderView('tools')">
-        <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
-        Herramientas
-    </button>
-    <button class="nav-btn" onclick="renderView('library')">
-        <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
-        Biblioteca
-    </button>
-    <button class="nav-btn" onclick="resetProgressConfirm()">
-        <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-        Reset
-    </button>
-</nav>
-
-<!-- Modal -->
-<div id="appModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <div id="modal-body" class="modal-body"></div>
+<div class="app-container">
+    
+    <!-- 1. MENÚ PRINCIPAL -->
+    <div id="view-menu" class="view active">
+        <img src="ojo-de-ra.png" alt="Ojo de Ra" class="logo-img">
+        <h1>Mente Consciente</h1>
+        <p>Selecciona la disciplina a practicar</p>
+        
+        <div class="menu-list">
+            <button class="btn-menu" onclick="abrirHub('observador')"><i>👁️</i> El Observador</button>
+            <button class="btn-menu" onclick="abrirHub('visualizacion')"><i>🔺</i> Visualización</button>
+            <button class="btn-menu" onclick="abrirHub('vacio')"><i>🌌</i> Vacío Mental</button>
+        </div>
     </div>
+
+    <!-- 2. HUB DEL EJERCICIO -->
+    <div id="view-hub" class="view">
+        <img src="ojo-de-ra.png" alt="Ojo de Ra" class="logo-img" style="width: 50px; height: 50px;">
+        <h1 id="hub-title">Nombre Ejercicio</h1>
+        <p id="hub-desc">Descripción del ejercicio.</p>
+
+        <button class="btn-full primary" onclick="prepararEjercicio()">▶ INICIAR PRÁCTICA</button>
+        <button class="btn-full" onclick="abrirNotas()">📝 NOTAS Y REFLEXIONES</button>
+        <button class="btn-full" onclick="mostrarHistorial()">📊 VER PROGRESO</button>
+        
+        <button class="btn-full" onclick="cambiarVista('view-menu')" style="border-color: #555; color: #aaa; margin-top: 20px;">Volver al Menú</button>
+    </div>
+
+    <!-- 3. SETUP VISUALIZACIÓN -->
+    <div id="view-setup-vis" class="view">
+        <h2>Visualización</h2>
+        <p>Elige el objeto de tu enfoque:</p>
+        <button class="btn-full" onclick="iniciarEjercicio('star')">⭐ Estrella Amarilla</button>
+        <button class="btn-full" onclick="iniciarEjercicio('circle')">🔴 Círculo Rojo</button>
+        <button class="btn-full" onclick="iniciarEjercicio('triangle')">🔵 Triángulo Azul</button>
+        <button class="btn-full" onclick="cambiarVista('view-hub')" style="margin-top: 30px; border-color: #555; color: #aaa;">Cancelar</button>
+    </div>
+
+    <!-- 4. PANTALLA DE EJERCICIO -->
+    <div id="view-exercise" class="view">
+        <h2 id="ex-title">Ejercicio</h2>
+        <p style="margin-bottom: 5px;">Meta: 10 Minutos Continuos.</p>
+        
+        <div class="shape-container"><div id="ex-shape" class="shape"></div></div>
+
+        <div class="timer" id="main-timer">00:00</div>
+        <div class="total-timer" id="total-timer">Total: 00:00</div>
+
+        <div id="controls-start" style="margin-top: 30px;">
+            <button class="btn-full primary" onclick="arrancarCronometro()">COMENZAR CRONÓMETRO</button>
+            <button class="btn-full" onclick="cambiarVista('view-hub')" style="border-color: #555; color: #aaa;">Cancelar</button>
+        </div>
+
+        <div id="controls-active" style="display: none;">
+            <button class="btn-loss" onclick="registrarLoss()">LOSS</button>
+            <button class="btn-full" onclick="finalizarEjercicio(false)" style="border-color: #555; color: #aaa;">Terminar Sesión</button>
+        </div>
+    </div>
+
+    <!-- 5. RESUMEN DE SESIÓN -->
+    <div id="view-summary" class="view">
+        <h2>Resumen de Sesión</h2>
+        <div id="summary-content" class="history-card"></div>
+        <button class="btn-full primary" onclick="abrirHub(tipoActual)" style="margin-top: 20px;">Volver al Ejercicio</button>
+    </div>
+
+    <!-- 6. HISTORIAL Y GRÁFICOS -->
+    <div id="view-history" class="view">
+        <h2 id="history-title">Progreso</h2>
+        
+        <!-- NUEVO: Gráfico Línea de Tiempo de Última Sesión -->
+        <div class="chart-container" id="containerLastSession">
+            <h3 style="font-size: 14px; margin: 0 0 10px 0; color: var(--text-main);">📍 Última Sesión: Puntos de Pérdida (Loss)</h3>
+            <canvas id="chartLastSession" height="100"></canvas>
+            <p id="no-loss-msg" style="display:none; color: var(--success); font-size: 13px; font-weight: bold; margin-top: 5px;">¡Sesión perfecta! Ningún loss registrado.</p>
+        </div>
+
+        <!-- Gráficos Históricos -->
+        <div class="chart-container"><canvas id="chartRacha"></canvas></div>
+        <div class="chart-container"><canvas id="chartLoss"></canvas></div>
+
+        <!-- Historial en Texto -->
+        <h2 style="margin-top:25px; font-size: 16px;">🏆 Mejores Sesiones</h2>
+        <div id="ranking-list"></div>
+        <h2 style="margin-top:25px; font-size: 16px;">📅 Sesiones Recientes</h2>
+        <div id="history-list" style="max-height: 250px; overflow-y: auto; margin-bottom: 20px;"></div>
+        
+        <button class="btn-full" onclick="abrirHub(tipoActual)">Volver al Ejercicio</button>
+        <button class="btn-full btn-danger" onclick="borrarRegistros()">🗑️ Reiniciar Historial</button>
+    </div>
+
+    <!-- 7. VISTA DE NOTAS -->
+    <div id="view-notes" class="view">
+        <h2 id="notes-title">Notas</h2>
+        <p style="font-size: 13px; margin-bottom: 10px;">Escribe tus sensaciones, reflexiones o distracciones recurrentes para este ejercicio.</p>
+        <textarea id="notes-text" placeholder="Hoy noté que mi mente se iba a..."></textarea>
+        
+        <button class="btn-full primary" onclick="guardarNotas()">GUARDAR NOTAS</button>
+        <button class="btn-full" onclick="cambiarVista('view-hub')" style="border-color: #555; color: #aaa;">Cancelar</button>
+    </div>
+
 </div>
 
-<script>
-    /* =========================================
-       BASE DE DATOS DE CONTENIDO DETALLADO
-       ========================================= */
-    const libraryData = {
-        // --- GRADO I ---
-        'g1_m_obs': `
-            <h3>Control del Pensamiento (Observación)</h3>
-            <p>Este es el primer paso y el más crucial. La mente indisciplinada es el mayor enemigo del mago.</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Siéntese en una posición cómoda (Asana). Relaje todo el cuerpo. Cierre los ojos.</li>
-                <li>Conviértase en un <b>observador silencioso</b> de su propia mente.</li>
-                <li>Observe cómo los pensamientos vienen y van. No los detenga, no los juzgue, no se enoje si son caóticos.</li>
-                <li>No se involucre en la "historia" de ningún pensamiento. Déjelos pasar como vehículos en una carretera.</li>
-            </ol>
-            <p><b>Meta:</b> Debe lograr esto durante <b>10 minutos</b> completos sin perder la postura de observador y sin ser arrastrado por una cadena de pensamientos.</p>
-        `,
-        'g1_m_disc': `
-            <h3>Disciplina Mental (Unidireccional)</h3>
-            <p>Una vez que puede observar sus pensamientos, debe aprender a sostener uno solo.</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Elija un solo pensamiento o imagen simple (ej. una flor, una vela, la palabra "Luz").</li>
-                <li>Mantenga ese pensamiento en el centro de su mente con toda su fuerza.</li>
-                <li>Rechace enérgicamente cualquier otro pensamiento intruso y vuelva inmediatamente a su objeto elegido.</li>
-            </ol>
-            <p><b>Meta:</b> Mantener la imagen o idea durante <b>10 minutos</b> sin una sola interrupción.</p>
-        `,
-        'g1_m_vaci': `
-            <h3>Vacío Mental (Silencio)</h3>
-            <p>Este es el fundamento de toda operación mágica futura. Sin vacío, no hay Akasha.</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Cierre los ojos.</li>
-                <li>Rechace enérgicamente cualquier pensamiento que intente aparecer.</li>
-                <li>Cree un estado de vacío absoluto. No debe haber imágenes, ni palabras, ni música interna. Solo silencio.</li>
-            </ol>
-            <p><b>Meta:</b> Lograr <b>10 minutos</b> de vacío total sin quedarse dormido y sin perder la conciencia.</p>
-        `,
-        'g1_a_magic': `
-            <h3>El Espejo Mágico del Alma</h3>
-            <p>El equilibrio elemental es la clave del poder. Un mago desequilibrado se destruirá a sí mismo.</p>
-            <p><b>Instrucción (Introspección):</b></p>
-            <ol>
-                <li>Tome un cuaderno privado (Diario Mágico). Nadie más debe verlo.</li>
-                <li><b>Espejo Negro:</b> Haga una lista honesta y despiadada de todos sus defectos, debilidades, vicios y malos hábitos. No esconda nada.</li>
-                <li><b>Espejo Blanco:</b> Haga otra lista con sus virtudes y fortalezas.</li>
-                <li><b>Clasificación Elemental:</b> Asigne cada defecto a un elemento:
-                    <ul>
-                        <li>🔥 <b>Fuego:</b> Ira, celos, odio, impulsividad, deseo de destrucción.</li>
-                        <li>💨 <b>Aire:</b> Frivolidad, presunción, chisme, inestabilidad, despilfarro.</li>
-                        <li>💧 <b>Agua:</b> Indiferencia, frialdad, timidez, negligencia, inestabilidad emocional.</li>
-                        <li>🌍 <b>Tierra:</b> Pereza, melancolía, lentitud, pesadez, materialismo.</li>
-                    </ul>
-                </li>
-            </ol>
-            <p><b>Meta:</b> Clasificar al menos 100 defectos antes de pasar al Grado 2.</p>
-        `,
-        'g1_p_skin': `
-            <h3>Higiene Energética Diaria</h3>
-            <p>El cuerpo debe estar preparado para manejar altas corrientes de energía.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li><b>Cepillado:</b> Cada mañana, use un cepillo de cerdas naturales o toalla áspera. Cepille todo el cuerpo en seco hasta que la piel se ponga rosada. Esto abre los poros para la respiración vital.</li>
-                <li><b>Agua Fría:</b> Lávese la parte superior del cuerpo (o dúchese completo) con agua fría. Mientras lo hace, imagine firmemente que el agua elimina no solo el sudor, sino las enfermedades y malas vibraciones de su aura.</li>
-            </ul>
-        `,
-        'g1_p_breath': `
-            <h3>Respiración Consciente de Aire</h3>
-            <p>El aire transporta el principio Akasha y la energía vital.</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Siéntese cómodamente. Respire por la nariz lenta y uniformemente.</li>
-                <li><b>Imaginación:</b> Al inhalar, imagine que el aire está cargado de un deseo específico (ej. "Salud perfecta", "Paz", "Éxito").</li>
-                <li>Sienta que esa idea entra en su sangre a través de los pulmones y se distribuye por todo el cuerpo.</li>
-                <li>Al exhalar, expulse el aire "vacío", pero retenga la idea/energía dentro de usted.</li>
-            </ol>
-            <p><b>Meta:</b> Iniciar con 7 respiraciones mañana y noche. Aumentar 1 por día hasta llegar a 40.</p>
-        `,
-        'g1_p_euc': `
-            <h3>Magia del Agua y Comida (Eucaristía)</h3>
-            <p>Todo lo que entra en el cuerpo puede ser una herramienta mágica.</p>
-            <p><b>Comida:</b></p>
-            <ul>
-                <li>Siéntese ante su comida. Concéntrese intensamente en que la comida contiene un deseo (ej. "Poder", "Salud").</li>
-                <li>Imagine la comida irradiando esa cualidad. Coma lentamente, asimilando esa energía. No hable ni lea.</li>
-            </ul>
-            <p><b>Agua Mágica:</b></p>
-            <ul>
-                <li>Tome un vaso de agua con la mano izquierda.</li>
-                <li>Proyecte su deseo en el agua hasta que sienta que el agua "es" el deseo (ej. "Medicina universal"). Bébela a sorbos pequeños.</li>
-            </ul>
-        `,
+<!-- Mensaje Toast Flotante -->
+<div id="toast">✅ Guardado correctamente</div>
 
-        // --- GRADO II ---
-        'g2_mental': `
-            <h3>Autosugestión</h3>
-            <p>El subconsciente es más receptivo en los momentos de transición entre vigilia y sueño.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Prepare una frase corta y positiva en tiempo presente (ej. "Yo estoy sano", "Mi memoria es perfecta").</li>
-                <li>Justo antes de dormir y inmediatamente al despertar, repita esta frase mentalmente.</li>
-                <li><b>El Collar:</b> Use un collar de cuentas o cuerda con nudos para contar 40 repeticiones. Esto evita que su mente consciente se distraiga contando números.</li>
-            </ul>
-        `,
-        'g2_sensory': `
-            <h3>Concentración Sensorial</h3>
-            <p>El mago debe aprender a usar sus sentidos mentales con la misma claridad que los físicos.</p>
-            <p><b>Práctica:</b> Dedique 5 minutos a cada sentido:</p>
-            <ol>
-                <li><b>Visual:</b> Visualice un objeto (ej. un lápiz) con los ojos cerrados. Mantenga la imagen fija.</li>
-                <li><b>Auditiva:</b> Escuche mentalmente el tic-tac de un reloj.</li>
-                <li><b>Sensorial:</b> Sienta frío, calor o peso sin causa física.</li>
-                <li><b>Olfativa:</b> Huela el aroma de una rosa imaginaria.</li>
-                <li><b>Gustativa:</b> Saboree azúcar o limón imaginario.</li>
-            </ol>
-        `,
-        'g2_astral': `
-            <h3>Transmutación del Carácter</h3>
-            <p>Este es el trabajo de la "Piedra Filosofal" en el alma.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Tome la lista de defectos del Grado 1 (Espejo Negro).</li>
-                <li>Seleccione los defectos más graves.</li>
-                <li><b>Método 1 (Voluntad):</b> Cada vez que surja el defecto, contrarréstrelo conscientemente con la virtud opuesta.</li>
-                <li><b>Método 2 (Autosugestión):</b> Use el ejercicio mental de autosugestión para eliminar el defecto.</li>
-            </ul>
-            <p><b>Advertencia:</b> No intente avanzar a la magia de elementos si su carácter está desequilibrado. El elemento dominante lo destruirá.</p>
-        `,
-        'g2_physical': `
-            <h3>Respiración por los Poros</h3>
-            <p>El cuerpo puede respirar energía vital por cada célula, no solo los pulmones.</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Siéntese en Asana. Relájese.</li>
-                <li>Imagine que su piel tiene millones de pequeños pulmones.</li>
-                <li>Al inhalar, sienta que el aire vital (cargado de luz o salud) entra por cada poro de su cuerpo hasta llegar a los huesos.</li>
-                <li>Sienta la presión de la energía vital dentro de usted.</li>
-                <li>Al exhalar, imagine que expulsa impurezas y aire viciado por cada poro hacia afuera.</li>
-            </ol>
-        `,
-        'g2_body': `
-            <h3>Dominio del Cuerpo</h3>
-            <p>Para controlar fuerzas externas, primero debe controlar su propio vehículo.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Siéntese en una posición cómoda pero firme.</li>
-                <li>Permanezca absolutamente inmóvil. No mueva ni un dedo, no parpadee excesivamente, no se rasque.</li>
-                <li>Ignore cualquier picazón.</li>
-                <li>Comience con 5 minutos y aumente gradualmente hasta lograr <b>30 minutos</b> de inmovilidad perfecta sin tensión.</li>
-            </ul>
-        `,
-
-        // --- GRADO III ---
-        'g3_mental': `
-            <h3>Concentración Multisensorial y Proyección</h3>
-            <p><b>Multisensorial:</b> Combine dos o más sentidos en la imaginación. Vea un reloj, escuche su tic-tac y sienta su forma fría y metálica simultáneamente.</p>
-            <p><b>Proyección Externa:</b></p>
-            <ol>
-                <li>Visualice un objeto con los ojos cerrados.</li>
-                <li>Luego, abra los ojos y proyecte esa imagen fuera de su cabeza, haciéndola flotar en el aire ante usted.</li>
-                <li>La imagen debe parecer tan real y tangible como un objeto físico.</li>
-                <li>Desvanezca la imagen a voluntad.</li>
-            </ol>
-        `,
-        'g3_astral': `
-            <h3>Inhalación de los Elementos</h3>
-            <p>Aprender a cargar el cuerpo astral con los elementos universales. Use la respiración por los poros.</p>
-            <ul>
-                <li>🔥 <b>Fuego:</b> Inhale calor y expansión (seco). Sienta el calor físico.</li>
-                <li>💨 <b>Aire:</b> Inhale ligereza y flotabilidad. Sienta que pierde peso.</li>
-                <li>💧 <b>Agua:</b> Inhale frío y contracción (magnético). Sienta frío glacial.</li>
-                <li>🌍 <b>Tierra:</b> Inhale peso y gravedad. Sienta pesadez de plomo.</li>
-            </ul>
-            <div class="warning-box"><b>¡ADVERTENCIA!</b> Al terminar el ejercicio, siempre debe EXHALAR el elemento completamente hasta volver a la normalidad. No se quede cargado con un elemento o dañará su salud.</div>
-        `,
-        'g3_physical': `
-            <h3>Acumulación de Energía Vital</h3>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Respire por los poros inhalando energía vital del universo.</li>
-                <li>No exhale la energía. Reténgala en el cuerpo. Exhale solo el aire vacío.</li>
-                <li>Con cada respiración, la energía se condensa más. Sienta la presión, como vapor en una caldera.</li>
-                <li>Cuando esté lleno a reventar, proyecte esa energía a través de sus manos para curar, o devuélvala al universo explosivamente.</li>
-            </ol>
-        `,
-
-        // --- GRADO IV ---
-        'g4_mental': `
-            <h3>Transferencia de Conciencia</h3>
-            <p>Romper la barrera del "Yo".</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Siéntese frente a un objeto (ej. una piedra).</li>
-                <li>Transfiera su conciencia al centro del objeto. Olvide su cuerpo.</li>
-                <li>Sienta cómo es "ser" la piedra (fría, dura, inmóvil).</li>
-                <li>Progrese hacia plantas (sienta el crecimiento), luego animales (sienta el instinto) y finalmente seres humanos.</li>
-            </ol>
-        `,
-        'g4_astral': `
-            <h3>Acumulación Elemental (Cuerpo)</h3>
-            <p>Cargar regiones específicas del cuerpo con elementos (Anatomía Oculta). Esto equilibra el cuerpo astral.</p>
-            <ul>
-                <li><b>Fuego:</b> Cabeza (Voluntad).</li>
-                <li><b>Aire:</b> Pecho (Sentimiento/Vida).</li>
-                <li><b>Agua:</b> Abdomen (Emoción/Magnetismo).</li>
-                <li><b>Tierra:</b> Piernas y Huesos (Conciencia física).</li>
-            </ul>
-        `,
-        'g4_physical': `
-            <h3>Creación de Rituales</h3>
-            <p>El mago no depende de rituales ajenos, crea los suyos.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li>Elija una intención (ej. entrar en trance, protección).</li>
-                <li>Invente un gesto (mudra) con las manos o dedos que represente esa intención.</li>
-                <li>Cargue ese gesto con la voluntad repetidamente.</li>
-                <li>Con el tiempo, solo hacer el gesto liberará la energía automáticamente (como un gatillo).</li>
-            </ul>
-        `,
-
-        // --- GRADO V ---
-        'g5_mental': `
-            <h3>Magia del Espacio (Profundidad del Punto)</h3>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Cierre los ojos. Imagínese en el centro del universo infinito.</li>
-                <li>Usted es solo un punto de conciencia. No tiene cuerpo.</li>
-                <li>No hay arriba, abajo, ni lados. Solo profundidad infinita.</li>
-                <li>Este es el contacto con el principio Akasha (la quintaesencia).</li>
-            </ol>
-        `,
-        'g5_astral': `
-            <h3>Proyección Exterior de Elementos</h3>
-            <p>Aprender a condensar elementos fuera del cuerpo.</p>
-            <p><b>Instrucción:</b></p>
-            <ul>
-                <li>En lugar de inhalar el elemento hacia adentro, imagínese que extrae el elemento del universo y llena la habitación con él.</li>
-                <li>Haga que la habitación se sienta físicamente caliente (Fuego) o fría (Agua).</li>
-                <li>Sienta que nada en el océano de ese elemento.</li>
-                <li>Al final, disuelva el elemento de nuevo en el universo.</li>
-            </ul>
-        `,
-        'g5_physical': `
-            <h3>Comunicación Pasiva</h3>
-            <p>Preparación para contactar con su Ángel Guardián o inteligencia superior.</p>
-            <p><b>Práctica:</b></p>
-            <ul>
-                <li><b>Levitación de la Mano:</b> Siéntese y ponga la mano en la mesa. Desée que su mano se mueva automáticamente por la fuerza de su espíritu. No use músculos.</li>
-                <li><b>Péndulo:</b> Use un péndulo para obtener respuestas Sí/No de su subconsciente.</li>
-            </ul>
-        `,
-
-        // --- GRADO VI ---
-        'g6_mental': `
-            <h3>Meditación en el Espíritu</h3>
-            <p>Tome conciencia de su propio espíritu mental dentro del cuerpo. Diferencie claramente entre:</p>
-            <ul>
-                <li><b>Cuerpo Físico:</b> El vehículo.</li>
-                <li><b>Cuerpo Astral (Alma):</b> El asiento de las emociones y carácter.</li>
-                <li><b>Espíritu (Mental):</b> El "Yo" inmortal, la chispa divina.</li>
-            </ul>
-            <p>Aprenda a actuar plenamente como Espíritu.</p>
-        `,
-        'g6_astral': `
-            <h3>Trance de Akasha</h3>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Entre en el estado de profundidad del punto (Grado 5).</li>
-                <li>Medite en el Akasha: el mundo de las causas, sin tiempo ni espacio. El color es violeta oscuro o negro brillante.</li>
-                <li>Absorba el Akasha en su conciencia.</li>
-                <li>En este estado, usted está por encima de los elementos y del destino.</li>
-            </ol>
-        `,
-        'g6_physical': `
-            <h3>Creación de Elementales</h3>
-            <p>El acto de creación mágica. Formar un servidor de energía.</p>
-            <p><b>Pasos:</b></p>
-            <ol>
-                <li><b>Forma:</b> Imagine la forma del ser (ej. una bola de luz).</li>
-                <li><b>Nombre:</b> Dele un nombre único.</li>
-                <li><b>Tarea:</b> Ordene una tarea específica y ética.</li>
-                <li><b>Tiempo:</b> Fije su duración de vida.</li>
-                <li><b>Proyección:</b> Separe una parte de su propia energía vital o elemental y llene la forma.</li>
-                <li><b>Reabsorción:</b> Al terminar la tarea o el tiempo, reabsorba la energía y disuelva la forma.</li>
-            </ol>
-        `,
-
-        // --- GRADO VII ---
-        'g7_mental': `
-            <h3>Análisis del Espíritu</h3>
-            <p>Similar al Espejo del Alma del Grado 1, pero enfocado en las capacidades mentales: Voluntad, Intelecto y Sentimiento. Asegúrese de que estén equilibradas. Un mago inteligente pero sin voluntad es débil; uno con voluntad pero tonto es peligroso.</p>
-        `,
-        'g7_astral': `
-            <h3>Desarrollo de los Sentidos Astrales</h3>
-            <p><b>Clarividencia (Ojo Mágico):</b> Crear un "Ojo" de luz condensada y proyectarlo para ver a distancia o ver auras.</p>
-            <p><b>Clariaudiencia:</b> Escuchar voces espirituales. Se practica concentrándose en la región del oído con el elemento Aire.</p>
-            <p><b>Clarinsentencia:</b> Sentir vibraciones a través del plexo solar (Elemento Agua/Tierra).</p>
-        `,
-        'g7_physical': `
-            <h3>Creación de Elementarios</h3>
-            <p>Diferencia con Elementales: Los elementales se forman con la energía del mago. Los <b>Elementarios</b> se forman tomando energía prestada de la naturaleza o del universo, haciéndolos más independientes y poderosos.</p>
-            <div class="warning-box">Solo para iniciados con ética impecable. El abuso crea karma negativo severo.</div>
-        `,
-
-        // --- GRADO VIII ---
-        'g8_mental': `
-            <h3>Viaje Mental (Wandering)</h3>
-            <p>La técnica de salir del cuerpo físico NO con el cuerpo astral, sino con el <b>Cuerpo Mental</b> (Espíritu).</p>
-            <p><b>Instrucción:</b></p>
-            <ol>
-                <li>Transfiera su conciencia fuera del cuerpo (como en Grado 4).</li>
-                <li>Visualícese de pie junto a su cuerpo físico.</li>
-                <li>Intente observar la habitación. Al principio será imaginación, luego visión real.</li>
-                <li>Viaje a lugares cercanos, luego lejanos.</li>
-                <li>No hay cordón de plata en el viaje mental, por lo que es más seguro que el astral.</li>
-            </ol>
-        `,
-        'g8_astral': `
-            <h3>Fluidos Eléctrico y Magnético</h3>
-            <p>El Gran Arcano. Dominio de los dos fluidos primordiales del universo.</p>
-            <ul>
-                <li><b>Fluido Eléctrico (Fuego/Aire):</b> Origen de la luz, el calor y la expansión. Color Rojo. Se proyecta desde el centro hacia afuera.</li>
-                <li><b>Fluido Magnético (Agua/Tierra):</b> Origen del peso, frío y contracción. Color Azul. Se proyecta de afuera hacia adentro.</li>
-            </ul>
-        `,
-        'g8_physical': `
-            <h3>Condensadores Fluídicos</h3>
-            <p>Creación de sustancias alquímicas capaces de retener cargas mágicas enormes.</p>
-            <p><b>Condensador Simple:</b> Infusión muy fuerte de manzanilla.</p>
-            <p><b>Condensador Compuesto:</b> Mezclas complejas de hierbas, metales (tintura de oro) y a veces fluidos corporales (sangre/esperma - solo para uso personal). Se usan para pintar espejos mágicos, cargar varas o consumir en dosis homeopáticas.</p>
-        `,
-
-        // --- GRADO IX ---
-        'g9_mental': `
-            <h3>Visión en el Espejo Mágico</h3>
-            <p>Uso avanzado del espejo (construido y cargado previamente).</p>
-            <ul>
-                <li><b>Visión a través del Espacio:</b> Ver lugares remotos.</li>
-                <li><b>Visión a través del Tiempo:</b> Ver el pasado (Akasha) o probabilidades futuras.</li>
-                <li><b>Influencia:</b> Enviar energía o elementales a través del espejo a una persona distante.</li>
-            </ul>
-        `,
-        'g9_astral': `
-            <h3>Viaje Astral</h3>
-            <p>La separación completa del cuerpo Astral (Alma) del físico.</p>
-            <ul>
-                <li>A diferencia del viaje mental, aquí se lleva la "matriz astral".</li>
-                <li>Usted está conectado al físico por el <b>Cordón de Plata</b>. Si se rompe, ocurre la muerte física.</li>
-                <li>Permite acción física a distancia y contacto tangible con entidades.</li>
-                <li>Peligroso si no se tiene equilibrio mágico.</li>
-            </ul>
-        `,
-        'g9_physical': `
-            <h3>Tratamiento con Fluido Electromagnético (Volts)</h3>
-            <p>Creación de "Volts" (esferas de energía concentrada) para alterar el destino, proteger o curar enfermedades graves. Carga de Talismanes permanentes usando los fluidos universales.</p>
-        `,
-
-        // --- GRADO X ---
-        'g10_mental': `
-            <h3>Ascensión a los Planos (Esferas)</h3>
-            <p>El mago eleva su espíritu a las esferas planetarias (Árbol de la Vida).</p>
-            <ul>
-                <li>Esfera de la Luna.</li>
-                <li>Esfera de Mercurio.</li>
-                <li>Esfera de Venus.</li>
-                <li>Esfera del Sol, etc.</li>
-            </ul>
-            <p>Contactar con las inteligencias de cada esfera y aprender sus secretos.</p>
-        `,
-        'g10_astral': `
-            <h3>Comunión con la Deidad</h3>
-            <p>El paso final. Unificación con el Dios personal.</p>
-            <p>Meditación profunda en las 4 virtudes divinas hasta convertirse en ellas:</p>
-            <ol>
-                <li><b>Omnipotencia (Fuego).</b></li>
-                <li><b>Sabiduría/Omnisciencia (Aire).</b></li>
-                <li><b>Amor/Misericordia (Agua).</b></li>
-                <li><b>Inmortalidad/Inmutabilidad (Tierra).</b></li>
-            </ol>
-        `,
-        'g10_physical': `
-            <h3>Poderes Externos y Cábala</h3>
-            <p>El Adepto. Uso de la palabra mágica (Cábala) para alterar la realidad física instantáneamente. Facultades como la teletransportación, invisibilidad física y materialización.</p>
-        `,
-
-        // --- HERRAMIENTAS ---
-        'tool_mirror': `<h3>El Espejo Mágico</h3><p><b>Material:</b> Vidrio cóncavo (como de reloj antiguo) o superficie plana negra brillante.<br><b>Construcción:</b> Limpie el vidrio perfectamente. Aplique varias capas de laca negra brillante o nitrato de plata en el lado convexo (trasero). Puede añadir gotas de condensador fluídico en la pintura.<br><b>Uso:</b> Cárgalo con Akasha o Luz imaginaria. No mires tu reflejo físico (desenfoca la vista), mira "a través" de la superficie hacia el infinito negro. Sirve para desarrollar la visión astral y contactar inteligencias.</p>`,
-        'tool_wand': `<h3>La Vara Mágica</h3><p>Simboliza la Voluntad Absoluta y el Elemento Fuego/Aire.<br><b>Simple:</b> Rama de avellano cortada con cuchillo virgen al amanecer. Limpia y magnetizada.<br><b>Compleja (Modelo Bardon):</b> Tubo de acero con un hilo de cobre en el centro, aislado, con condensador sólido o líquido dentro. Polarizada (+/-).<br><b>Uso:</b> Para proyectar fuerza concentrada, trazar círculos de protección y mandar a seres elementales.</p>`,
-        'tool_lamp': `<h3>La Lámpara Mágica</h3><p>Una lámpara de aceite o eléctrica simple.<br><b>Uso:</b> Se cubre con papel celofán o vidrio de colores para generar atmósferas específicas en la habitación ritual.<br>Rojo = Fuego / Voluntad.<br>Azul = Aire / Inteligencia.<br>Verde = Agua / Sentimiento.<br>Amarillo = Tierra / Conciencia.<br>Violeta = Akasha / Misterio.</p>`,
-        'tool_fluid': `<h3>Condensadores Fluídicos</h3><p>Sustancias capaces de retener y amplificar cargas mágicas.<br><b>Simple:</b> Infusión muy fuerte de manzanilla o té negro.<br><b>Compuesto Universal:</b> Mezcla de extractos alcohólicos de: Angélica, Salvia, Tilo, Pepino, Acacia, Manzanilla, Azucena, Canela, Ortiga, Menta, Álamo, Violeta, Sauce, Tabaco + Tintura de Oro.<br><b>Uso:</b> Pintar espejos, cargar varas o consumo personal (diluido homeopáticamente).</p>`,
-        'tool_pentacle': `<h3>El Pentáculo</h3><p>Disco de cera virgen, madera o metal que simboliza el cuerpo y el elemento Tierra.<br><b>Uso:</b> Se graba con símbolos pertinentes a la operación. Se usa para protección, para evocar energías terrestres y como "tierra" para descargar energías sobrantes.</p>`
-    };
-
-    // --- 2. CONFIGURACIÓN DE GRADOS Y REPETICIONES ---
-    const gradesData = [
-        {
-            id: 'g1', 
-            title: 'Grado I: El Iniciado', 
-            sub: 'Dominio de Pensamientos y Elementos Básicos',
-            tasks: [
-                {id: 't1_1', text: 'Mental: Control del Pensamiento (Observador)', target: 14, ref: 'g1_m_obs'},
-                {id: 't1_2', text: 'Mental: Disciplina (Un solo pensamiento)', target: 14, ref: 'g1_m_disc'},
-                {id: 't1_3', text: 'Mental: Vacío Mental', target: 21, ref: 'g1_m_vaci'},
-                {id: 't1_4', text: 'Astral: El Espejo del Alma', target: 14, ref: 'g1_a_magic'},
-                {id: 't1_5', text: 'Físico: Higiene Energética', target: 30, ref: 'g1_p_skin'},
-                {id: 't1_6', text: 'Físico: Respiración Consciente', target: 30, ref: 'g1_p_breath'},
-                {id: 't1_7', text: 'Físico: Magia del Agua y Comida', target: 30, ref: 'g1_p_euc'}
-            ]
-        },
-        {
-            id: 'g2', 
-            title: 'Grado II: Concentración', 
-            sub: 'Autosugestión y Refinamiento',
-            tasks: [
-                {id: 't2_1', text: 'Mental: Autosugestión', target: 21, ref: 'g2_mental'},
-                {id: 't2_2', text: 'Mental: Concentración Sensorial', target: 14, ref: 'g2_sensory'},
-                {id: 't2_3', text: 'Astral: Transformación del Carácter', target: 21, ref: 'g2_astral'},
-                {id: 't2_4', text: 'Físico: Respiración por los Poros', target: 14, ref: 'g2_physical'},
-                {id: 't2_5', text: 'Físico: Dominio del Cuerpo', target: 14, ref: 'g2_body'}
-            ]
-        },
-        {
-            id: 'g3', 
-            title: 'Grado III: Los Elementos', 
-            sub: 'Respiración Elemental y Proyección',
-            tasks: [
-                {id: 't3_1', text: 'Mental: Visualización Multisensorial', target: 14, ref: 'g3_mental'},
-                {id: 't3_2', text: 'Mental: Proyección de Imágenes', target: 14, ref: 'g3_mental'},
-                {id: 't3_3', text: 'Astral: Inhalación de Elementos', target: 21, ref: 'g3_astral'},
-                {id: 't3_4', text: 'Físico: Acumulación Vital', target: 14, ref: 'g3_physical'}
-            ]
-        },
-        {
-            id: 'g4', 
-            title: 'Grado IV: Rituales', 
-            sub: 'Transferencia de Conciencia',
-            tasks: [
-                {id: 't4_1', text: 'Mental: Transferencia de Conciencia', target: 14, ref: 'g4_mental'},
-                {id: 't4_2', text: 'Astral: Acumulación Elemental (Cuerpo)', target: 20, ref: 'g4_astral'},
-                {id: 't4_3', text: 'Físico: Creación de Rituales', target: 7, ref: 'g4_physical'}
-            ]
-        },
-        {
-            id: 'g5', 
-            title: 'Grado V: Alquimia Espacial', 
-            sub: 'Magia del Espacio y Comunicación',
-            tasks: [
-                {id: 't5_1', text: 'Mental: Magia del Espacio', target: 14, ref: 'g5_mental'},
-                {id: 't5_2', text: 'Astral: Proyección Exterior', target: 20, ref: 'g5_astral'},
-                {id: 't5_3', text: 'Físico: Comunicación Pasiva', target: 14, ref: 'g5_physical'}
-            ]
-        },
-        {
-            id: 'g6', 
-            title: 'Grado VI: Akasha', 
-            sub: 'Elementales y Meditación Espiritual',
-            tasks: [
-                {id: 't6_1', text: 'Mental: Meditación en el Espíritu', target: 14, ref: 'g6_mental'},
-                {id: 't6_2', text: 'Astral: Trance de Akasha', target: 14, ref: 'g6_astral'},
-                {id: 't6_3', text: 'Físico: Creación de Elementales', target: 7, ref: 'g6_physical'}
-            ]
-        },
-        {
-            id: 'g7', 
-            title: 'Grado VII: Sentidos Astrales', 
-            sub: 'Clarividencia y Elementarios',
-            tasks: [
-                {id: 't7_1', text: 'Mental: Análisis del Espíritu', target: 7, ref: 'g7_mental'},
-                {id: 't7_2', text: 'Astral: Clarividencia', target: 21, ref: 'g7_astral'},
-                {id: 't7_3', text: 'Físico: Elementarios', target: 7, ref: 'g7_physical'}
-            ]
-        },
-        {
-            id: 'g8', 
-            title: 'Grado VIII: Viaje Mental', 
-            sub: 'Fluidos y Separación',
-            tasks: [
-                {id: 't8_1', text: 'Mental: Viaje Mental', target: 21, ref: 'g8_mental'},
-                {id: 't8_2', text: 'Astral: Control de Fluidos Eléc./Mag.', target: 21, ref: 'g8_astral'},
-                {id: 't8_3', text: 'Físico: Condensadores Fluídicos', target: 7, ref: 'g8_physical'}
-            ]
-        },
-        {
-            id: 'g9', 
-            title: 'Grado IX: Viaje Astral', 
-            sub: 'Espejo Mágico y Volts',
-            tasks: [
-                {id: 't9_1', text: 'Mental: Visión en el Espejo Mágico', target: 14, ref: 'g9_mental'},
-                {id: 't9_2', text: 'Astral: Viaje Astral', target: 21, ref: 'g9_astral'},
-                {id: 't9_3', text: 'Físico: Volts y Talismanes', target: 7, ref: 'g9_physical'}
-            ]
-        },
-        {
-            id: 'g10', 
-            title: 'Grado X: El Adepto', 
-            sub: 'Unión Divina y Esferas',
-            tasks: [
-                {id: 't10_1', text: 'Mental: Ascensión a los Planos', target: 30, ref: 'g10_mental'},
-                {id: 't10_2', text: 'Astral: Comunión con la Deidad', target: 30, ref: 'g10_astral'},
-                {id: 't10_3', text: 'Físico: Poderes Externos', target: 14, ref: 'g10_physical'}
-            ]
-        }
-    ];
-
-    // --- 3. LÓGICA DE LA APLICACIÓN ---
-
-    let userProgress = JSON.parse(localStorage.getItem('bardonMasterProgress')) || {};
-
-    // Inicializar progreso si está vacío
-    if (Object.keys(userProgress).length === 0) {
-        gradesData.forEach(g => {
-            g.tasks.forEach(t => userProgress[t.id] = 0);
-        });
-        localStorage.setItem('bardonMasterProgress', JSON.stringify(userProgress));
-    }
-
-    function renderView(viewName) {
-        // Actualizar botones nav
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        if(viewName === 'training') document.querySelectorAll('.nav-btn')[0].classList.add('active');
-        if(viewName === 'tools') document.querySelectorAll('.nav-btn')[1].classList.add('active');
-        if(viewName === 'library') document.querySelectorAll('.nav-btn')[2].classList.add('active');
-
-        const container = document.getElementById('main-view');
-        container.innerHTML = ''; 
-
-        if (viewName === 'training') renderTraining(container);
-        if (viewName === 'tools') renderTools(container);
-        if (viewName === 'library') renderLibrary(container);
-        
-        window.scrollTo(0, 0);
-    }
-
-    function renderTraining(container) {
-        let isPreviousGradeComplete = true;
-
-        gradesData.forEach((grade) => {
-            let currentGradeComplete = true;
-            grade.tasks.forEach(t => {
-                if (userProgress[t.id] < t.target) currentGradeComplete = false;
-            });
-
-            const isLocked = !isPreviousGradeComplete;
-            const completedClass = currentGradeComplete ? 'completed' : '';
-            const lockedClass = isLocked ? 'locked' : '';
-            const icon = isLocked ? '🔒' : (currentGradeComplete ? '✓' : '✧');
-
-            const gradeHTML = document.createElement('div');
-            gradeHTML.className = 'grade-wrapper';
-            gradeHTML.innerHTML = `
-                <div class="grade-header ${lockedClass} ${completedClass}" onclick="toggleGrade('list-${grade.id}', ${isLocked})">
-                    <div>
-                        <div class="grade-title">${grade.title}</div>
-                        <div class="grade-info">${grade.sub}</div>
-                    </div>
-                    <div style="font-size:1.5rem; color:var(--accent-gold);">${icon}</div>
-                </div>
-                <div id="list-${grade.id}" class="exercises-list">
-                    ${renderTasks(grade.tasks, isLocked)}
-                </div>
-            `;
-            container.appendChild(gradeHTML);
-
-            if (!currentGradeComplete) isPreviousGradeComplete = false;
-        });
-        
-        if(isPreviousGradeComplete) {
-             const congrats = document.createElement('div');
-             congrats.innerHTML = `<div style="text-align:center; padding:20px; color:var(--accent-gold); border:1px solid var(--accent-gold); margin-top:20px; border-radius:10px;"><h3>¡MAESTRÍA ALCANZADA!</h3><p>Has completado el camino de la Iniciación.</p></div>`;
-             container.appendChild(congrats);
-        }
-    }
-
-    function renderTasks(tasks, isLocked) {
-        if (isLocked) return `<div style="padding:15px; color:#666; font-style:italic;">Completa el grado anterior para desbloquear los misterios.</div>`;
-        
-        return tasks.map(t => {
-            const currentReps = userProgress[t.id] || 0;
-            const percentage = Math.min(100, Math.floor((currentReps / t.target) * 100));
-            const isDone = currentReps >= t.target;
-            const btnText = isDone ? 'Completado' : 'Registrar (+1)';
-            const btnDisabled = isDone ? 'disabled' : '';
-            
-            let tagType = 'mental';
-            let tagText = 'Mental';
-            if(t.text.includes('Astral') || t.text.includes('Espejo') || t.text.includes('Inhalación')) { tagType = 'astral'; tagText = 'Astral'; }
-            if(t.text.includes('Físico') || t.text.includes('Cuerpo') || t.text.includes('Higiene')) { tagType = 'fisico'; tagText = 'Físico'; }
-
-            return `
-            <div class="exercise-card">
-                <span class="ex-tag ${tagType}">${tagText}</span>
-                <div class="ex-title">${t.text}</div>
-                
-                <div class="progress-container">
-                    <div class="progress-info">
-                        <span>Progreso: ${currentReps}/${t.target}</span>
-                        <span>${percentage}%</span>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill" style="width:${percentage}%"></div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-theory" onclick="showTheory('${t.ref}', '${t.text}')">
-                        📖 Teoría
-                    </button>
-                    <button class="btn btn-train" onclick="addProgress('${t.id}', ${t.target})" ${btnDisabled}>
-                        ⚡ ${btnText}
-                    </button>
-                </div>
-            </div>
-            `;
-        }).join('');
-    }
-
-    function renderTools(container) {
-        container.innerHTML = `
-            <h2 style="color:var(--accent-gold); text-align:center; font-family:'Cinzel', serif; margin-bottom:20px;">Instrumentarium Mágico</h2>
-            <div class="tool-grid">
-                <div class="tool-item" onclick="showTheory('tool_mirror', 'El Espejo Mágico')"><span class="tool-icon">🔮</span><div class="tool-text">Espejo Mágico</div></div>
-                <div class="tool-item" onclick="showTheory('tool_wand', 'La Vara Mágica')"><span class="tool-icon">🪄</span><div class="tool-text">Vara de Poder</div></div>
-                <div class="tool-item" onclick="showTheory('tool_fluid', 'Condensadores')"><span class="tool-icon">⚗️</span><div class="tool-text">Condensadores</div></div>
-                <div class="tool-item" onclick="showTheory('tool_pentacle', 'El Pentáculo')"><span class="tool-icon">⛤</span><div class="tool-text">Pentáculo</div></div>
-                 <div class="tool-item" onclick="showTheory('tool_lamp', 'La Lámpara Mágica')"><span class="tool-icon">🏮</span><div class="tool-text">Lámpara</div></div>
-            </div>
-
-            <h3 style="color:var(--accent-teal-bright); margin-top:30px; text-align:center;">Los Tattwas (Elementos)</h3>
-            <div style="background:var(--bg-card); padding:20px; border-radius:10px; margin-top:10px; text-align:center; border:1px solid rgba(255,255,255,0.05);">
-                <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Símbolos visuales para la meditación elemental.</p>
-                <div class="tattwa-box">
-                    <div class="tattwa-wrapper"><div class="tattwa-akasha"></div><small style="font-size:0.7em; color:#666">Akasha</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-fire"></div><small style="font-size:0.7em; color:#666">Tejas</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-air"></div><small style="font-size:0.7em; color:#666">Waju</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-water"></div><small style="font-size:0.7em; color:#666">Apas</small></div>
-                    <div class="tattwa-wrapper"><div class="tattwa-earth"></div><small style="font-size:0.7em; color:#666">Prithivi</small></div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderLibrary(container) {
-        container.innerHTML = `
-            <h2 style="color:var(--accent-gold); text-align:center; font-family:'Cinzel', serif; margin-bottom:20px;">Biblioteca Hermética</h2>
-            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-gold);">Iniciación al Hermetismo</div><p class="ex-desc">El curso base de 10 pasos. Trata sobre el equilibrio de los elementos y el dominio del yo.</p></div>
-            <div class="exercise-card"><div class="ex-title" style="color:var(--accent-teal-bright);">La Práctica de la Evocación Mágica</div><p class="ex-desc">Guía para contactar inteligencias de las esferas planetarias. Requiere haber completado el Grado 8 de IIH.</p></div>
-            <div class="exercise-card"><div class="ex-title" style="color:#b388ff;">La Clave de la Verdadera Cábala</div><p class="ex-desc">El uso del Verbo y el Sonido. La magia de las letras.</p></div>
-            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:#666;"><p>"El saber no es suficiente; debemos aplicar. El querer no es suficiente; debemos hacer."</p></div>
-        `;
-    }
-
-    function toggleGrade(elementId, isLocked) {
-        if (isLocked) { alert("Completa el grado anterior."); return; }
-        document.getElementById(elementId).classList.toggle('open');
-    }
-
-    function addProgress(taskId, target) {
-        if (userProgress[taskId] < target) {
-            userProgress[taskId]++;
-            localStorage.setItem('bardonMasterProgress', JSON.stringify(userProgress));
-            renderView('training');
-        }
-    }
-
-    function showTheory(key, title) {
-        const modal = document.getElementById('appModal');
-        const content = libraryData[key] || "<p>Información no disponible.</p>";
-        document.getElementById('modal-body').innerHTML = `<h3>${title}</h3>${content}`;
-        modal.style.display = "block";
-    }
-
-    function closeModal() { document.getElementById('appModal').style.display = "none"; }
-    
-    function resetProgressConfirm() {
-        if(confirm("¿Estás seguro de reiniciar todo el progreso?")) {
-            localStorage.removeItem('bardonMasterProgress');
-            location.reload();
-        }
-    }
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('appModal');
-        if (event.target == modal) modal.style.display = "none";
-    }
-
-    // Inicializar
-    renderView('training');
-</script>
 <script>
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/Hemetic-work/service-worker.js')
-                .then(registration => {
-                    console.log('ServiceWorker registrado con éxito: ', registration.scope);
-                })
-                .catch(error => {
-                    console.log('Fallo en el registro de ServiceWorker: ', error);
-                });
+        window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(err => console.warn(err)); });
+    }
+
+    const infoEjercicios = {
+        'observador': { title: 'El Observador', desc: 'Cierra los ojos. Deja pasar tus pensamientos como vehículos en una carretera. No te involucres en su historia.' },
+        'visualizacion': { title: 'Visualización', desc: 'Mantén la mirada y atención fijas en la figura geométrica en pantalla sin distraerte.' },
+        'vacio': { title: 'Vacío Mental', desc: 'Mantén la mente en blanco total. Al presionar LOSS, tu racha actual se guardará y el cronómetro volverá a cero.' }
+    };
+
+    let tipoActual = '';
+    let temporizador = null;
+    let segTranscurridos = 0;
+    let segTotalesVacio = 0;
+    let registroLoss = [];
+    let vacioSegmentos = [];
+    let timelineLossTemp = []; // NUEVO: Guarda el segundo exacto de cada loss de la sesión actual
+    let metaSegundos = 600; 
+    let fechaInicioObj = null;
+    let wakeLock = null;
+
+    // Instancias de Gráficos
+    let rachaChartInstance = null;
+    let lossChartInstance = null;
+    let lastSessionChartInstance = null;
+
+    // --- UTILIDADES ---
+    function cambiarVista(idVista) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(idVista).classList.add('active');
+    }
+
+    function formatoTiempo(segundos) {
+        let m = Math.floor(segundos / 60).toString().padStart(2, '0');
+        let s = (segundos % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    }
+
+    function mostrarToast() {
+        let toast = document.getElementById("toast");
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    // --- WAKE LOCK ---
+    async function solicitarWakeLock() {
+        try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } 
+        catch (err) { console.warn(err); }
+    }
+    async function liberarWakeLock() {
+        if (wakeLock !== null) { await wakeLock.release(); wakeLock = null; }
+    }
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') solicitarWakeLock();
+    });
+
+    // --- FLUJO ---
+    function abrirHub(tipo) {
+        tipoActual = tipo;
+        document.getElementById('hub-title').innerText = infoEjercicios[tipo].title;
+        document.getElementById('hub-desc').innerText = infoEjercicios[tipo].desc;
+        cambiarVista('view-hub');
+    }
+
+    // --- NOTAS PERSONALES ---
+    function abrirNotas() {
+        document.getElementById('notes-title').innerText = "Diario: " + infoEjercicios[tipoActual].title;
+        let notasGuardadas = JSON.parse(localStorage.getItem('mindfulness_notes') || '{}');
+        document.getElementById('notes-text').value = notasGuardadas[tipoActual] || '';
+        cambiarVista('view-notes');
+    }
+
+    function guardarNotas() {
+        let notasGuardadas = JSON.parse(localStorage.getItem('mindfulness_notes') || '{}');
+        notasGuardadas[tipoActual] = document.getElementById('notes-text').value;
+        localStorage.setItem('mindfulness_notes', JSON.stringify(notasGuardadas));
+        mostrarToast();
+        cambiarVista('view-hub');
+    }
+
+    // --- EJERCICIO ---
+    function prepararEjercicio() {
+        if (tipoActual === 'visualizacion') cambiarVista('view-setup-vis');
+        else iniciarEjercicio(null);
+    }
+
+    function iniciarEjercicio(figura) {
+        segTranscurridos = 0; segTotalesVacio = 0;
+        registroLoss = []; vacioSegmentos = []; timelineLossTemp = [];
+        clearInterval(temporizador);
+        liberarWakeLock();
+
+        document.getElementById('ex-title').innerText = infoEjercicios[tipoActual].title;
+        
+        let shapeDiv = document.getElementById('ex-shape');
+        shapeDiv.className = 'shape'; shapeDiv.style.display = 'none';
+        if (tipoActual === 'visualizacion' && figura) { shapeDiv.classList.add(figura); shapeDiv.style.display = 'block'; }
+
+        document.getElementById('main-timer').innerText = "00:00";
+        let totalTimerUI = document.getElementById('total-timer');
+        if (tipoActual === 'vacio') {
+            totalTimerUI.style.display = 'block'; totalTimerUI.innerText = "Tiempo Invertido: 00:00";
+        } else totalTimerUI.style.display = 'none';
+
+        document.getElementById('controls-start').style.display = 'block';
+        document.getElementById('controls-active').style.display = 'none';
+        cambiarVista('view-exercise');
+    }
+
+    function arrancarCronometro() {
+        document.getElementById('controls-start').style.display = 'none';
+        document.getElementById('controls-active').style.display = 'block';
+        fechaInicioObj = new Date();
+        solicitarWakeLock();
+
+        temporizador = setInterval(() => {
+            segTranscurridos++;
+            if (tipoActual === 'vacio') {
+                segTotalesVacio++;
+                document.getElementById('total-timer').innerText = "Tiempo Invertido: " + formatoTiempo(segTotalesVacio);
+            }
+            document.getElementById('main-timer').innerText = formatoTiempo(segTranscurridos);
+            if (segTranscurridos >= metaSegundos) finalizarEjercicio(true);
+        }, 1000);
+    }
+
+    function registrarLoss() {
+        // Guardamos el segundo exacto en la línea de tiempo global de la sesión
+        timelineLossTemp.push(tipoActual === 'vacio' ? segTotalesVacio : segTranscurridos);
+
+        if (tipoActual === 'vacio') {
+            vacioSegmentos.push(segTranscurridos);
+            segTranscurridos = 0;
+            document.getElementById('main-timer').innerText = "00:00";
+        } else {
+            registroLoss.push(segTranscurridos);
+        }
+    }
+
+    function finalizarEjercicio(metaAlcanzada) {
+        clearInterval(temporizador);
+        liberarWakeLock();
+
+        let intervalos = [], rachaMasLarga = 0;
+
+        if (tipoActual === 'vacio') {
+            if (segTranscurridos > 0 || metaAlcanzada) vacioSegmentos.push(segTranscurridos);
+            intervalos = vacioSegmentos;
+            rachaMasLarga = intervalos.length > 0 ? Math.max(...intervalos) : 0;
+        } else {
+            let puntoAnterior = 0;
+            for (let i = 0; i < registroLoss.length; i++) {
+                intervalos.push(registroLoss[i] - puntoAnterior);
+                puntoAnterior = registroLoss[i];
+            }
+            intervalos.push(segTranscurridos - puntoAnterior);
+            rachaMasLarga = intervalos.length > 0 ? Math.max(...intervalos) : 0;
+        }
+
+        let duracionTotalCalculada = (tipoActual === 'vacio') ? segTotalesVacio : segTranscurridos;
+        let vecesLoss = (tipoActual === 'vacio') ? (vacioSegmentos.length - 1) : registroLoss.length;
+        if (vecesLoss < 0) vecesLoss = 0;
+        let logroExitoso = (metaAlcanzada && vecesLoss === 0) || (tipoActual === 'vacio' && metaAlcanzada);
+
+        let registro = {
+            tipo: tipoActual,
+            fecha: fechaInicioObj.toLocaleDateString(),
+            horaInicio: fechaInicioObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            duracionTotal: duracionTotalCalculada,
+            cantidadLoss: vecesLoss,
+            rachaMaxima: rachaMasLarga,
+            timelineLoss: timelineLossTemp, // Se guarda el arreglo de tiempos exactos
+            exito: logroExitoso,
+            timestamp: fechaInicioObj.getTime()
+        };
+
+        let historial = JSON.parse(localStorage.getItem('mindfulness_data') || '[]');
+        historial.push(registro);
+        localStorage.setItem('mindfulness_data', JSON.stringify(historial));
+
+        mostrarResumen(registro);
+    }
+
+    function mostrarResumen(registro) {
+        let exitoHtml = registro.exito ? `<h3 style="color:var(--success)">🏆 ¡Meta Cumplida!</h3>` : `<h3>Sesión Terminada</h3>`;
+        document.getElementById('summary-content').innerHTML = `
+            ${exitoHtml}
+            <p><strong>Día:</strong> ${registro.fecha} a las ${registro.horaInicio}</p>
+            <p><strong>Duración Total:</strong> ${formatoTiempo(registro.duracionTotal)}</p>
+            <p><strong>Veces Loss:</strong> ${registro.cantidadLoss}</p>
+            <p><strong>Mejor Racha:</strong> <span style="color:var(--accent)">${formatoTiempo(registro.rachaMaxima)}</span></p>
+        `;
+        cambiarVista('view-summary');
+    }
+
+    // --- HISTORIAL Y GRÁFICOS ---
+    function mostrarHistorial() {
+        document.getElementById('history-title').innerText = "Progreso: " + infoEjercicios[tipoActual].title;
+        let historialGlobal = JSON.parse(localStorage.getItem('mindfulness_data') || '[]');
+        let datosEjercicio = historialGlobal.filter(h => h.tipo === tipoActual);
+        
+        dibujarGraficos(datosEjercicio);
+        generarListas(datosEjercicio);
+        cambiarVista('view-history');
+    }
+
+    function dibujarGraficos(datos) {
+        if(rachaChartInstance) rachaChartInstance.destroy();
+        if(lossChartInstance) lossChartInstance.destroy();
+        if(lastSessionChartInstance) lastSessionChartInstance.destroy();
+
+        if (datos.length === 0) {
+            document.getElementById('containerLastSession').style.display = 'none';
+            return;
+        }
+
+        Chart.defaults.color = '#e8d5a5';
+        Chart.defaults.borderColor = 'rgba(212, 175, 55, 0.2)';
+
+        // 1. GRÁFICO LÍNEA DE TIEMPO (ÚLTIMA SESIÓN)
+        document.getElementById('containerLastSession').style.display = 'block';
+        let latestSession = [...datos].sort((a,b) => b.timestamp - a.timestamp)[0]; // Toma la más reciente
+        let pntsLine = latestSession.timelineLoss || [];
+        
+        let msgNoLoss = document.getElementById('no-loss-msg');
+        if (pntsLine.length === 0) {
+            msgNoLoss.style.display = 'block';
+            document.getElementById('chartLastSession').style.display = 'none';
+        } else {
+            msgNoLoss.style.display = 'none';
+            document.getElementById('chartLastSession').style.display = 'block';
+            
+            // Transformamos los segundos a coordenadas (X = Segundo, Y = 1 constante para que quede en línea horizontal)
+            let scatterData = pntsLine.map(sec => ({ x: sec, y: 1 }));
+
+            let ctxLast = document.getElementById('chartLastSession').getContext('2d');
+            lastSessionChartInstance = new Chart(ctxLast, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Momento de Loss',
+                        data: scatterData,
+                        backgroundColor: '#e74c3c', // Rojo llamativo
+                        borderColor: '#fff',
+                        pointRadius: 6,
+                        pointHoverRadius: 9
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) { return 'Loss en ' + formatoTiempo(ctx.raw.x); }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            type: 'linear', min: 0, max: latestSession.duracionTotal,
+                            ticks: { callback: function(value) { return formatoTiempo(value); }, maxTicksLimit: 6 }
+                        },
+                        y: { display: false, min: 0, max: 2 } // Ocultar eje Y, solo nos importa el eje X (Tiempo)
+                    }
+                }
+            });
+        }
+
+        // 2. GRÁFICOS HISTÓRICOS GLOBALES
+        let datosGrafico = [...datos].sort((a,b) => a.timestamp - b.timestamp).slice(-15);
+        let labels = datosGrafico.map(h => h.fecha.substring(0,5));
+        let rachaData = datosGrafico.map(h => (h.rachaMaxima / 60).toFixed(2));
+        let lossData = datosGrafico.map(h => h.cantidadLoss);
+
+        let ctxRacha = document.getElementById('chartRacha').getContext('2d');
+        rachaChartInstance = new Chart(ctxRacha, {
+            type: 'line',
+            data: { labels: labels, datasets: [{ label: 'Racha Max por sesión (Min)', data: rachaData, borderColor: '#d4af37', backgroundColor: 'rgba(212, 175, 55, 0.2)', fill: true, tension: 0.3, pointBackgroundColor: '#d4af37' }] },
+            options: { responsive: true, plugins: { legend: { display: true } } }
+        });
+
+        let ctxLoss = document.getElementById('chartLoss').getContext('2d');
+        lossChartInstance = new Chart(ctxLoss, {
+            type: 'bar',
+            data: { labels: labels, datasets: [{ label: 'Cantidad de "Loss" por Sesión', data: lossData, backgroundColor: '#2d6a4f', borderColor: '#d4af37', borderWidth: 1 }] },
+            options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
         });
     }
-</script>    
+
+    function generarListas(datos) {
+        let contRanking = document.getElementById('ranking-list');
+        let contRecientes = document.getElementById('history-list');
+
+        if (datos.length === 0) {
+            contRanking.innerHTML = "<p>Sin datos aún.</p>"; contRecientes.innerHTML = "<p>No hay sesiones registradas.</p>"; return;
+        }
+
+        let ranking = [...datos].sort((a, b) => b.rachaMaxima - a.rachaMaxima).slice(0, 3);
+        contRanking.innerHTML = ranking.map((reg, index) => `
+            <div class="history-card" style="border-color: var(--success);">
+                <h4><span>#${index + 1} Racha: ${formatoTiempo(reg.rachaMaxima)}</span> <span class="ranking-badge">${reg.exito ? '🏆 Éxito' : ''}</span></h4>
+                <p style="font-size:13px; color:#ccc;">Logrado el: ${reg.fecha} (${reg.horaInicio})</p>
+            </div>
+        `).join('');
+
+        let recientes = [...datos].sort((a, b) => b.timestamp - a.timestamp);
+        contRecientes.innerHTML = recientes.map(reg => `
+            <div class="history-card">
+                <h4>${reg.fecha} - ${reg.horaInicio} ${reg.exito ? '🏆' : ''}</h4>
+                <p>Losses: ${reg.cantidadLoss} | Racha Sesión: ${formatoTiempo(reg.rachaMaxima)}</p>
+            </div>
+        `).join('');
+    }
+
+    function borrarRegistros() {
+        if (confirm(`¿Borrar TODOS tus progresos de "${infoEjercicios[tipoActual].title}"?`)) {
+            let historialLimpio = JSON.parse(localStorage.getItem('mindfulness_data') || '[]').filter(h => h.tipo !== tipoActual);
+            localStorage.setItem('mindfulness_data', JSON.stringify(historialLimpio));
+            mostrarHistorial();
+        }
+    }
+</script>
+
 </body>
 </html>
